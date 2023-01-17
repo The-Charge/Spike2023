@@ -11,8 +11,17 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import java.util.Collections;
+import java.util.List;
 
+import edu.wpi.first.apriltag.AprilTag;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.math.geometry.Pose3d;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -71,6 +80,38 @@ public class Constants {
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
     
+    }
+    public static class VisionConstants {
+        public static final Transform3d robotToCam = new Transform3d(new Translation3d(0,0,0), new Rotation3d(0,0,0));
+        public static final Transform3d camToRobot = robotToCam.inverse();
+        static final String cameraName = "Front Camera";
+    }
+    public static class FieldConstants { 
+
+        //Need to add these field measurements for field pose estimation
+
+        static final double loadTagLength = Units.inchesToMeters(24.38 + 3); //height of loading zone apriltag (Measured from floor to center of tag)
+        //static final double loadWidth = Units.feetToMeters();
+
+        static final double nodeTagLength = Units.inchesToMeters(15.13 + 3); //height of node apriltag placement (Measured from floor to center of tag)
+        //static final double nodeWidth = Units.feetToMeters();
+
+        //Field Dimensions
+        static final double fieldLength = Units.feetToMeters(54);
+        static final double fieldWidth = Units.feetToMeters(27);
+        //Apriltag locations
+        private static final List<AprilTag> targetPoses = Collections.unmodifiableList(
+            List.of(
+                new AprilTag(0, new Pose3d(3.0,1.165,0.287+0.165,new Rotation3d(0,0, Units.degreesToRadians(180))))
+                
+                
+                
+                
+                
+                
+                ));
+        public static final AprilTagFieldLayout layout = new AprilTagFieldLayout(targetPoses, fieldLength, fieldWidth);
+
     }
 }
 
