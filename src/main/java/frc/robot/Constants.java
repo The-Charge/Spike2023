@@ -32,86 +32,12 @@ import edu.wpi.first.math.geometry.Pose3d;
  */
 public class Constants {
     public static final class DriveConstants {
-        public static final int kLeftMotor1Port = 1;
-        public static final int kLeftMotor2Port = 2;
-        public static final int kLeftMotor3Port = 3;
-        public static final int kRightMotor1Port = 7;
-        public static final int kRightMotor2Port = 0;
-        public static final int kRightMotor3Port = 8;
-        // public static final int[] kLeftEncoderPorts = new int[]{1,2,3};
-        // public static final int[] kRightEncoderPorts = new int[]{7,0,8};
-        // These are never called
-        // public static final boolean kLeftEncoderReversed = false;
-        // public static final boolean kRightEncoderReversed = true;
-
         public static final double kTrackwidthMeters = .609; //.4826; 
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
                 kTrackwidthMeters);
-
-        public static final int kEncoderCPR = 19000; // 15525
-        public static final double kWheelDiameterMeters = 0.152;
-        public static final double kEncoderDistancePerPulse =
-                // Assumes the encoders are directly mounted on the wheel shafts
-                (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
-
-        public static final boolean kGyroReversed = true;
-        // TODO test/tune these values
-        public static final double ksVolts = .62031;//0.75588; // .501
-        public static final double kvVoltSecondsPerMeter = 2.4678; //1.5582; //1.6
-        public static final double kaVoltSecondsSquaredPerMeter = .39963;// 0.176;
-
-        // Example value only - as above, this must be tuned for your drive!
-        public static final double kPDriveVel = 3.4457; //4
-    }
-
-    public static final class OIConstants {
-        public static final int kDriverControllerPort = 1;
-    }
-
-    public static final class AutoConstants {
-        public static final double intakeSpeed = 0.4;
-        public static final double deliverSpeed = 1.0;
-        public static final double teleSpeed = 0.8;
-        public static final double kMaxSpeedMetersPerSecond = 1.5; // 1.0
-        public static final double kMaxAccelerationMetersPerSecondSquared = 1.0; // .5
-
-        // Reasonable baseline values for a RAMSETE follower in units of meters and
-        // seconds
-        public static final double kRamseteB = 2;
-        public static final double kRamseteZeta = 0.7;
-    
     }
     public static class VisionConstants {
-        public static final Transform3d robotToCam = new Transform3d(new Translation3d(0,0,0), new Rotation3d(0,0,0));
-        public static final Transform3d camToRobot = robotToCam.inverse();
-        static final String cameraName = "Front Camera";
-    }
-    public static class FieldConstants { 
-
-        //Need to add these field measurements for field pose estimation
-
-        static final double loadTagLength = Units.inchesToMeters(24.38 + 3); //height of loading zone apriltag (Measured from floor to center of tag)
-        //static final double loadWidth = Units.feetToMeters();
-
-        static final double nodeTagLength = Units.inchesToMeters(15.13 + 3); //height of node apriltag placement (Measured from floor to center of tag)
-        //static final double nodeWidth = Units.feetToMeters();
-
-        //Field Dimensions
-        static final double fieldLength = Units.feetToMeters(54);
-        static final double fieldWidth = Units.feetToMeters(27);
-        //Apriltag locations
-        private static final List<AprilTag> targetPoses = Collections.unmodifiableList(
-            List.of(
-                new AprilTag(0, new Pose3d(3.0,1.165,0.287+0.165,new Rotation3d(0,0, Units.degreesToRadians(180))))
-                
-                
-                
-                
-                
-                
-                ));
-        public static final AprilTagFieldLayout layout = new AprilTagFieldLayout(targetPoses, fieldLength, fieldWidth);
-
+        public static final String cameraName = "Logi_Webcam_C920e"; //Name for Logitech Camera
     }
 }
 
