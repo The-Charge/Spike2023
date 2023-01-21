@@ -26,12 +26,13 @@ import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
+import com.kauailabs.navx.frc.AHRS.SerialDataType;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.SerialPort.Port; //might change to I2C
+import edu.wpi.first.wpilibj.SerialPort; //might change to I2C
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import frc.robot.Constants.DriveConstants;
 
@@ -51,7 +52,7 @@ private MotorControllerGroup m_rightMotors;
 
 public boolean InvertSpeed = false; 
 
-private final AHRS m_gyro = new AHRS(Port.kMXP);
+private final AHRS m_gyro = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte)50);
 // private double gyroOffset = 0;
 
 public Drivetrain() {
