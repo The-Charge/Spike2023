@@ -46,7 +46,7 @@ private final Joystick leftJoystick = new Joystick(0);
     RobotContainer() {
 
         //configureButtonBindings();
-    m_drivetrain.setDefaultCommand(new Tankdrive( m_drivetrain ) );
+    m_drivetrain.setDefaultCommand(new TankDrive( m_drivetrain ) );
 
 
         SmartDashboard.putData("AutoSelect", m_chooser);

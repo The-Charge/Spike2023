@@ -47,9 +47,11 @@ private WPI_TalonFX rightBackMotor;
 
 private MotorControllerGroup m_leftMotors; 
 
-private MotorControllerGroup m_rightMotors; 
+private MotorControllerGroup m_rightMotors;
 
-// private final AHRS m_gyro = new AHRS(Port.kMXP);
+public boolean InvertSpeed = false; 
+
+private final AHRS m_gyro = new AHRS(Port.kMXP);
 // private double gyroOffset = 0;
 
 public Drivetrain() {
@@ -87,7 +89,10 @@ public Drivetrain() {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
+    SmartDashboard.putBoolean("IMU_Connected", m_gyro.isConnected());
+    SmartDashboard.putNumber("IMU_Yaw", m_gyro.getYaw());
+    SmartDashboard.putNumber("IMU_Pitch", m_gyro.getPitch());
+    SmartDashboard.putNumber("IMU_Roll", m_gyro.getRoll());
   }
 
   @Override
@@ -119,4 +124,15 @@ public Drivetrain() {
 
 
     }
+
+    public double getPitch(){
+      return m_gyro.getPitch();
+    }
+
+    public void isReversed(){
+      InvertSpeed = !InvertSpeed;
+    }
+
+
+
 }
