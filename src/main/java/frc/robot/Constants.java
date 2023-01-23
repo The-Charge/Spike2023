@@ -35,9 +35,21 @@ public class Constants {
         public static final double kTrackwidthMeters = .609; //.4826; 
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
                 kTrackwidthMeters);
+
+        public final static double LINEAR_P = 0.1;
+        public final static double LINEAR_D = 0.0;
+        public final static double ANGULAR_P = 0.1;
+        public final static double ANGULAR_D = 0.0;
     }
     public static class VisionConstants {
-        public static final String cameraName = "Logi_Webcam_C920e"; //Name for Logitech Camera
+        public static final String frontCameraName = "Logi_Webcam_C920e"; //Name for Logitech Camera
+        public static final String tapeCameraName = "HD_Webcam_C615";
+
+        public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(0); //Height of camera on robot
+        public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
+
+
+
     }
 }
 

@@ -7,11 +7,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
 public class Camera extends SubsystemBase{
-    private PhotonCamera frontCamera; 
+    private PhotonCamera frontCamera, tapeCamera; 
 
     public Camera() {
         //PhotonCamera object for the Logitech camera.
-        frontCamera = new PhotonCamera(VisionConstants.cameraName);
+        frontCamera = new PhotonCamera(VisionConstants.frontCameraName);
+        tapeCamera = new PhotonCamera(VisionConstants.tapeCameraName);
     }
     @Override
     public void periodic() {
@@ -26,6 +27,8 @@ public class Camera extends SubsystemBase{
         else {
             SmartDashboard.putNumber("ID", -1); //no target found
         }
+        SmartDashboard.putNumber("Pipeline Index", frontCamera.getPipelineIndex());
+        SmartDashboard.putBoolean("Has Target", tapeCamera.getLatestResult().hasTargets());
     }
     @Override
     public void simulationPeriodic() {
@@ -34,5 +37,8 @@ public class Camera extends SubsystemBase{
     public PhotonCamera getFrontCamera() {
         //return camera object for command manipulation
         return frontCamera;
+    }
+    public PhotonCamera getTapeCamera() {
+        return tapeCamera;
     }
 }

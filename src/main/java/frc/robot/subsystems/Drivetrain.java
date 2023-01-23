@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -15,9 +16,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import frc.robot.Constants.DriveConstants;
 
-public class Drivetrain extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
-  
+public class Drivetrain extends SubsystemBase { 
 
 private WPI_TalonFX leftFrontMotor;
 private WPI_TalonFX leftBackMotor;
@@ -28,6 +27,8 @@ private WPI_TalonFX rightBackMotor;
 private MotorControllerGroup m_leftMotors; 
 private MotorControllerGroup m_rightMotors; 
 
+private DifferentialDrive differentialDrive;
+
 public Drivetrain() {
   leftFrontMotor = new WPI_TalonFX(1);
   leftBackMotor = new WPI_TalonFX(2);
@@ -35,6 +36,7 @@ public Drivetrain() {
   rightBackMotor = new WPI_TalonFX(4);
   m_leftMotors = new MotorControllerGroup(leftFrontMotor, leftBackMotor);
 	m_rightMotors = new MotorControllerGroup(rightFrontMotor, rightBackMotor);
+  differentialDrive = new DifferentialDrive(m_leftMotors, m_rightMotors);
 }
 
   @Override
@@ -50,6 +52,9 @@ public Drivetrain() {
 		leftFrontMotor.set(l);
 		rightFrontMotor.set(r);
 	}
+  public void runArcade(double f, double r) {
+    differentialDrive.arcadeDrive(f, r);
+  }
 
   public void runVelocityMode(double leftVelo, double rightVelo){
     leftFrontMotor.set(ControlMode.Velocity, leftVelo);
