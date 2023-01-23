@@ -21,7 +21,6 @@ public class RobotContainer {
     public final Drivetrain m_drivetrain = new Drivetrain();
 
     public final Camera m_camera = new Camera();
-    //public final PhotonCamera m_camera = new PhotonCamera(VisionConstants.cameraName);
 
     // Joysticks
     private final Joystick rightJoystick = new Joystick(1);

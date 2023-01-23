@@ -6,13 +6,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
+//Camera subsystem to encompass both PhotonCameras
 public class Camera extends SubsystemBase{
     private PhotonCamera frontCamera, tapeCamera; 
 
     public Camera() {
-        //PhotonCamera object for the Logitech camera.
-        frontCamera = new PhotonCamera(VisionConstants.frontCameraName);
-        tapeCamera = new PhotonCamera(VisionConstants.tapeCameraName);
+        frontCamera = new PhotonCamera(VisionConstants.frontCameraName); //aprilTagCamera
+        tapeCamera = new PhotonCamera(VisionConstants.tapeCameraName); //reflectiveTapeCamera
     }
     @Override
     public void periodic() {

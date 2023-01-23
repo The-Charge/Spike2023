@@ -36,6 +36,7 @@ public class Constants {
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
                 kTrackwidthMeters);
 
+        //Need to adjust, values are from example
         public final static double LINEAR_P = 0.1;
         public final static double LINEAR_D = 0.0;
         public final static double ANGULAR_P = 0.1;
@@ -47,9 +48,6 @@ public class Constants {
 
         public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(0); //Height of camera on robot
         public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
-
-
-
     }
 }
 
