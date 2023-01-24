@@ -51,7 +51,16 @@ private final Joystick leftJoystick = new Joystick(0);
 
         SmartDashboard.putData("AutoSelect", m_chooser);
     }
+        public void configureButtonBindings()
+        {
+          JoystickButton halfButton = new JoystickButton(leftJoystick, 1);
+          JoystickButton quarterButton = new JoystickButton(leftJoystick, 2);
+            halfButton.onTrue(new HalfSpeed(m_drivetrain));
+            quarterButton.onTrue(new HalfSpeed(m_drivetrain));
+          
+        }
 
+        
     public static RobotContainer getInstance() {
         return m_robotContainer;
     }

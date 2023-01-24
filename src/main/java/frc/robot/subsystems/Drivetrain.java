@@ -116,7 +116,23 @@ public Drivetrain() {
 
 		leftFrontMotor.configNeutralDeadband(0.08);
 		rightFrontMotor.configNeutralDeadband(0.08);
+    
+       
+    }
+    double wheelSpeed = 0;
+    double speedMultiplier = 0;
+    public void setQuarterSpeed()
+    {
+        speedMultiplier = 0.25;
+        wheelSpeed *= speedMultiplier;
 
+    }
+
+    public void setHalfSpeed()
+    {
+        speedMultiplier = 0.5;
+        wheelSpeed *= speedMultiplier;
 
     }
 }
+
