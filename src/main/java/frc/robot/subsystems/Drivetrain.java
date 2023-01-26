@@ -56,7 +56,9 @@ public class Drivetrain extends SubsystemBase {
   public boolean InvertSpeed = false; 
 
   private AHRS m_gyro;
-  // private double gyroOffset = 0;
+  private double gyroOffset = 0;
+  public final DifferentialDriveOdometry m_odometry;
+
 
   public Drivetrain() {
     leftFrontMotor = new WPI_TalonFX(1);
@@ -64,7 +66,9 @@ public class Drivetrain extends SubsystemBase {
     rightFrontMotor = new WPI_TalonFX(3);
     rightBackMotor = new WPI_TalonFX(4);
     try { m_gyro = new AHRS(SPI.Port.kMXP);} catch (RuntimeException ex ) {DriverStation.reportError( ex.getMessage(), true);} 
-    Timer.delay(1.0);
+    Timer.delay(1.0);  
+    m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), 0, 0, new Pose2d(0, 0, new Rotation2d()));
+    
   }
 
   public CommandBase exampleMethodCommand() {
@@ -93,6 +97,12 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("IMU_Yaw", m_gyro.getYaw());
       SmartDashboard.putNumber("IMU_Pitch", m_gyro.getPitch());
       SmartDashboard.putNumber("IMU_Roll", m_gyro.getRoll());
+      SmartDashboard.putNumber("Left_Encoder", leftFrontMotor.getSelectedSensorPosition(0));
+      SmartDashboard.putNumber("Right_Encoder", rightFrontMotor.getSelectedSensorPosition(0));
+      m_odometry.update(Rotation2d.fromDegrees(getHeading()),
+        leftFrontMotor.getSelectedSensorPosition(0) * DriveConstants.kEncoderDistancePerPulse,
+        rightFrontMotor.getSelectedSensorPosition(0) * DriveConstants.kEncoderDistancePerPulse
+      );
   }
 
   @Override
@@ -127,6 +137,10 @@ public class Drivetrain extends SubsystemBase {
   public double getPitch(){
    return m_gyro.getPitch();
   }
+
+  public double getHeading() {
+		return m_gyro.getRotation2d().getDegrees() - gyroOffset;
+	}
 
   public void isReversed(){
     InvertSpeed = !InvertSpeed;
