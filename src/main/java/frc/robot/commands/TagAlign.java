@@ -55,8 +55,8 @@ public class TagAlign extends CommandBase {
         }
         else {
             //no targets -> run tankDrive until there is a target in sight
-            forwardSpeed = -RobotContainer.getInstance().getrightJoystick().getY();
-            rotationSpeed = -RobotContainer.getInstance().getleftJoystick().getY();
+            forwardSpeed = -RobotContainer.getInstance().getRightJoystick().getY();
+            rotationSpeed = -RobotContainer.getInstance().getLeftJoystick().getY();
             m_drivetrain.run(forwardSpeed, rotationSpeed);
         }
         SmartDashboard.putBoolean("atAprilTag", atDestination); //for testing
