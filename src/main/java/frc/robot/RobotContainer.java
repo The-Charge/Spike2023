@@ -29,6 +29,8 @@ public class RobotContainer {
 
     public final Drivetrain m_drivetrain = new Drivetrain();
 
+    public final Camera m_Camera = new Camera();
+
 // Joysticks
 private final Joystick rightJoystick = new Joystick(1);
 private final Joystick leftJoystick = new Joystick(0);
@@ -44,7 +46,7 @@ private final Joystick leftJoystick = new Joystick(0);
      */
     RobotContainer() {
 
-        //configureButtonBindings();
+        configureButtonBindings();
     m_drivetrain.setDefaultCommand(new TankDrive( m_drivetrain ) );
 
 
@@ -55,7 +57,10 @@ private final Joystick leftJoystick = new Joystick(0);
         return m_robotContainer;
     }
 
-
+    public void configureButtonBindings() {
+        JoystickButton tagAlignBtn = new JoystickButton(leftJoystick, 0);
+        tagAlignBtn.onTrue(new TagAlign(m_drivetrain, m_Camera));
+    }
 // SmartDashboard.putData("resetPivots", new InstantCommand(() -> m_pivot.zeroSensors()));
 // SmartDashboard.putData("resetTele", new InstantCommand(() -> m_telescope.resetTeleEncoders()));
 // SmartDashboard.putData("resetDrivetrain", new InstantCommand(() -> m_drivetrain.resetEncoders()));

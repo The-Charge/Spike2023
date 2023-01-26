@@ -84,7 +84,7 @@ private WPI_TalonFX rightBackMotor;
 		leftFrontMotor.set(ControlMode.Velocity, l);
 		rightFrontMotor.set(ControlMode.Velocity, r);
 	}
-
+	//Arcade control for TagAlign testing
 	public void runArcade(double f, double r) {
 		differentialDrive.arcadeDrive(f, r);
 	}
