@@ -17,9 +17,8 @@ public class TagAlign extends CommandBase {
     private final Drivetrain m_drivetrain;
     private final Camera m_camera;
 
-    final double TARGET_HEIGHT_METERS = 0; //Height of target (to be changed)
-    final double GOAL_RANGE_METERS = Units.feetToMeters(3); //distance to reach between tag and robot
-    public boolean atDestination = false; //Robot has reached destination?
+    public double TARGET_HEIGHT_METERS = 0; //Height of target (to be changed)
+    final double GOAL_RANGE_METERS = Units.feetToMeters(2); //distance to reach between tag and robot
 
     //PIDControllers from example: adjust as needed
     private final PIDController forwardController = new PIDController(DriveConstants.LINEAR_P, 0, DriveConstants.LINEAR_D);
@@ -32,26 +31,27 @@ public class TagAlign extends CommandBase {
     @Override
     public void execute() {
         //speeds for arcadedrive
-        double forwardSpeed;
-        double rotationSpeed;
+        double forwardSpeed, rotationSpeed;
 
         //get result, if there are targets within the cameraview
         var result = m_camera.getFrontCamera().getLatestResult();
         if (result.hasTargets()) {
             //calculate range between robot and bestTarget
+            if (result.getBestTarget().getFiducialId() == 4) {
+                TARGET_HEIGHT_METERS = Units.inchesToMeters(15.13);
+            }
+            else {
+                TARGET_HEIGHT_METERS = Units.inchesToMeters(24.38);
+            }
             double range = PhotonUtils.calculateDistanceToTargetMeters(VisionConstants.CAMERA_HEIGHT_METERS,
             TARGET_HEIGHT_METERS, VisionConstants.CAMERA_PITCH_RADIANS, Units.degreesToRadians(result.getBestTarget().getPitch()));
+            SmartDashboard.putNumber("Range", range);
             //calculate and feed speed values into runArcade in Drivetrain
             forwardSpeed = -forwardController.calculate(range, GOAL_RANGE_METERS);
             rotationSpeed = -turnController.calculate(result.getBestTarget().getYaw(), 0);  
-            m_drivetrain.runArcade(forwardSpeed, range);
-            //if there is no movement, robot should be atDestination
-            if ((forwardSpeed == 0) && (rotationSpeed == 0)) { 
-                atDestination = true;
-            }
-            else {
-                atDestination = false;
-            }
+            SmartDashboard.putNumber("forward", forwardSpeed);
+            SmartDashboard.putNumber("Rotation", rotationSpeed);
+            m_drivetrain.runArcade(forwardSpeed, rotationSpeed);
         }
         else {
             //no targets -> run tankDrive until there is a target in sight
@@ -59,7 +59,6 @@ public class TagAlign extends CommandBase {
             rotationSpeed = -RobotContainer.getInstance().getLeftJoystick().getY();
             m_drivetrain.run(forwardSpeed, rotationSpeed);
         }
-        SmartDashboard.putBoolean("atAprilTag", atDestination); //for testing
     }
 
 
