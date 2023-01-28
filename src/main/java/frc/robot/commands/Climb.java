@@ -4,17 +4,16 @@
 
 package frc.robot.commands;
 
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-public class TankDrive extends CommandBase {
+public class Climb extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Drivetrain m_drivetrain;
   /**
    *
    * @param subsystem The subsystem used by this command.
    */
-  public TankDrive(Drivetrain subsystem) {
+  public Climb(Drivetrain subsystem) {
     m_drivetrain = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -28,9 +27,20 @@ public class TankDrive extends CommandBase {
   @Override
   public void execute() {
     double leftSpeed, rightSpeed;
-    rightSpeed = -RobotContainer.getInstance().getrightJoystick().getY();
-    leftSpeed = -RobotContainer.getInstance().getleftJoystick().getY();
-    m_drivetrain.run(leftSpeed, rightSpeed);
+    leftSpeed = m_drivetrain.getPitch()*0.05;
+    if(leftSpeed > .2){
+      leftSpeed = .2;
+    }
+    if(leftSpeed < -.2){
+      leftSpeed = -.2;
+    }
+    rightSpeed = leftSpeed;
+    
+   // rightSpeed = -RobotContainer.getInstance().getrightJoystick().getY();
+  //  leftSpeed = -RobotContainer.getInstance().getleftJoystick().getY();
+
+     m_drivetrain.run(leftSpeed, rightSpeed);
+     //SmartDashboard.putNumber("joystick", rightSpeed + leftSpeed);
 }
 
   // Called once the command ends or is interrupted.

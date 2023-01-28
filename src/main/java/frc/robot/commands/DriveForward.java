@@ -4,35 +4,42 @@
 
 package frc.robot.commands;
 
-import frc.robot.RobotContainer;
+
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-public class TankDrive extends CommandBase {
+public class DriveForward extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Drivetrain m_drivetrain;
+  private double m_speed; 
+  private double m_stopPitch;
+  private double thisPitch;
   /**
    *
    * @param subsystem The subsystem used by this command.
    */
-  public TankDrive(Drivetrain subsystem) {
+  public DriveForward(Drivetrain subsystem, double speed, double stopPitch) {
     m_drivetrain = subsystem;
+    m_speed = speed;
+    m_stopPitch = stopPitch;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {m_drivetrain.initializeMotors();}
+  public void initialize() {
+    m_drivetrain.initializeMotors();
+    thisPitch = m_drivetrain.getPitch();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double leftSpeed, rightSpeed;
-    rightSpeed = -RobotContainer.getInstance().getrightJoystick().getY();
-    leftSpeed = -RobotContainer.getInstance().getleftJoystick().getY();
-    m_drivetrain.run(leftSpeed, rightSpeed);
-}
-
+    thisPitch = m_drivetrain.getPitch();
+    if (Math.abs(thisPitch) < m_stopPitch){
+      m_drivetrain.run(m_speed,m_speed);
+    }
+  }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
@@ -40,6 +47,10 @@ public class TankDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (Math.abs(thisPitch) >= m_stopPitch){
+      m_drivetrain.run(0,0);
+      return true;
+    }
+    else return false;
   }
 }

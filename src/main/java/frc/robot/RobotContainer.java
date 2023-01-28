@@ -46,8 +46,8 @@ private final Joystick leftJoystick = new Joystick(0);
     RobotContainer() {
 
         //configureButtonBindings();
-    m_drivetrain.setDefaultCommand(new TankDrive( m_drivetrain ) );
-
+    //m_drivetrain.setDefaultCommand(new TankDrive( m_drivetrain ) );
+      m_drivetrain.setDefaultCommand(new DriveForward(m_drivetrain, .2, 5));  
 
         SmartDashboard.putData("AutoSelect", m_chooser);
     }
@@ -55,6 +55,7 @@ private final Joystick leftJoystick = new Joystick(0);
     public static RobotContainer getInstance() {
         return m_robotContainer;
     }
+    
 
 
 // SmartDashboard.putData("resetPivots", new InstantCommand(() -> m_pivot.zeroSensors()));
