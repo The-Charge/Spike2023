@@ -1,16 +1,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.kauailabs.navx.frc.AHRS;
-import com.kauailabs.navx.frc.AHRS.SerialDataType;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.SerialPort; //might change to I2C
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
-  private final AHRS m_gyro = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte) 50);
-
   private WPI_TalonFX leftFrontMotor;
   private WPI_TalonFX leftBackMotor;
   private WPI_TalonFX rightFrontMotor;
@@ -18,8 +12,6 @@ public class Drivetrain extends SubsystemBase {
 
   private MotorControllerGroup m_leftMotors;
   private MotorControllerGroup m_rightMotors;
-
-  public boolean InvertSpeed = false;
 
   public Drivetrain() {
     leftFrontMotor = new WPI_TalonFX(1);
@@ -57,19 +49,11 @@ public class Drivetrain extends SubsystemBase {
   // This method will be called once per scheduler run
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("IMU_Connected", m_gyro.isConnected());
-    SmartDashboard.putNumber("IMU_Yaw", m_gyro.getYaw());
-    SmartDashboard.putNumber("IMU_Pitch", m_gyro.getPitch());
-    SmartDashboard.putNumber("IMU_Roll", m_gyro.getRoll());
   }
 
   // This method will be called once per scheduler run during simulation
   @Override
   public void simulationPeriodic() {
-  }
-
-  public void isReversed() {
-    InvertSpeed = !InvertSpeed;
   }
 
 }
