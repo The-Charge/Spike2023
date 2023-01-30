@@ -147,4 +147,10 @@ public class Drivetrain extends SubsystemBase {
   public void isReversed(){
     InvertSpeed = !InvertSpeed;
   }
+
+  public void stop() {
+		leftFrontMotor.set(ControlMode.PercentOutput, 0);
+		rightFrontMotor.set(ControlMode.PercentOutput, 0);
+	}
+
 }
