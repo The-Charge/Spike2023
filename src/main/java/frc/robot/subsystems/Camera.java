@@ -28,7 +28,7 @@ public class Camera extends SubsystemBase{
             SmartDashboard.putNumber("ID", -1); //no target found
         }
         SmartDashboard.putNumber("Pipeline Index", frontCamera.getPipelineIndex());
-        SmartDashboard.putBoolean("Has Target", tapeCamera.getLatestResult().hasTargets());
+        SmartDashboard.putBoolean("Has Target", frontCamera.getLatestResult().hasTargets());
     }
     @Override
     public void simulationPeriodic() {

@@ -10,19 +10,9 @@
 
 
 package frc.robot;
-
-import java.util.Collections;
-import java.util.List;
-
-import edu.wpi.first.apriltag.AprilTag;
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.math.geometry.Pose3d;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -38,9 +28,10 @@ public class Constants {
                 kTrackwidthMeters);
         public static final double kWheelDiameterMeters = 0.152;
         //Need to be tuned
-        public final static double LINEAR_P = 3;
+        public final static double LINEAR_P = 0.5;
         public final static double LINEAR_D = 0.0;
-        public final static double ANGULAR_P = 0.002;
+        // public final static double ANGULAR_P = 0.002;
+        public final static double ANGULAR_P = SmartDashboard.getNumber("Angular P", 0);
         public final static double ANGULAR_D = 0.0;
     }
     public static class VisionConstants {
@@ -48,7 +39,7 @@ public class Constants {
         public static final String tapeCameraName = "HD_Webcam_C615";
 
         public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(8); //Height of camera on robot
-        public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
+        public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0); //VERY IMPORTANT
     }
 }
 

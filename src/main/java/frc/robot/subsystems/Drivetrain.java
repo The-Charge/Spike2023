@@ -14,9 +14,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.Constants.DriveConstants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -55,7 +57,8 @@ private WPI_TalonFX rightBackMotor;
 	// here. Call these from Commands.
 
 	public void initializeMotors() {
-
+		SmartDashboard.putNumber("Linear P", DriveConstants.LINEAR_P);
+		SmartDashboard.putNumber("Angular P", 0);
 		leftFrontMotor.configFactoryDefault();
 		rightFrontMotor.configFactoryDefault();
 
@@ -70,8 +73,8 @@ private WPI_TalonFX rightBackMotor;
 		leftBackMotor.configOpenloopRamp(0.5);
 		leftFrontMotor.configOpenloopRamp(0.5);
 
-		leftFrontMotor.configNeutralDeadband(0.08);
-		rightFrontMotor.configNeutralDeadband(0.08);
+		// leftFrontMotor.configNeutralDeadband(0.08);
+		// rightFrontMotor.configNeutralDeadband(0.08);
     }
 
   
@@ -91,6 +94,12 @@ private WPI_TalonFX rightBackMotor;
 	public void stop() {
 		leftFrontMotor.set(ControlMode.PercentOutput, 0);
 		rightFrontMotor.set(ControlMode.PercentOutput, 0);
+	}
+	public void setBrakeMode() {
+		leftFrontMotor.setNeutralMode(NeutralMode.Brake);
+		leftBackMotor.setNeutralMode(NeutralMode.Brake);
+		rightFrontMotor.setNeutralMode(NeutralMode.Brake);
+		rightBackMotor.setNeutralMode(NeutralMode.Brake);
 	}
 	
 	public double getLeftEncoder() {

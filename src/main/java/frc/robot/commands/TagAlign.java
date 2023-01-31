@@ -16,7 +16,6 @@ import frc.robot.subsystems.*;
 public class TagAlign extends CommandBase {
     private final Drivetrain m_drivetrain;
     private final Camera m_camera;
-
     public double TARGET_HEIGHT_METERS = 0; //Height of target (to be changed)
     final double GOAL_RANGE_METERS = Units.feetToMeters(2); //distance to reach between tag and robot
 
@@ -27,6 +26,8 @@ public class TagAlign extends CommandBase {
     public TagAlign(Drivetrain m_drivetrain, Camera m_camera){
         this.m_drivetrain = m_drivetrain;
         this.m_camera = m_camera;
+        SmartDashboard.putNumber("Goal Distance", GOAL_RANGE_METERS);
+        m_drivetrain.setBrakeMode();
     }
     @Override
     public void execute() {
