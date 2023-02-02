@@ -54,6 +54,10 @@ public class Constants {
         // Example value only - as above, this must be tuned for your drive!
         public static final double kPDriveVel = 3.4457; //4
     }
+    public static final class ArmConstants {
+        public static final double shoulderArmLengthInch = 42;
+        public static final double elbowArmLengthInch = 32;
+    }
 
     public static final class OIConstants {
         public static final int kDriverControllerPort = 1;
