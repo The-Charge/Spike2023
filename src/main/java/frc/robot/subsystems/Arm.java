@@ -9,7 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.ArmConstants;
 
 import java.lang.Math;
 
@@ -33,17 +33,17 @@ public class Arm extends SubsystemBase {
   }
   private boolean isOverLimit(double targetShoulderAngle, double targetElbowAngle){
     double thirdSide = Math.sqrt(
-      Constants.ArmConstants.shoulderArmLengthInch * Constants.ArmConstants.shoulderArmLengthInch + 
-      Constants.ArmConstants.elbowArmLengthInch * Constants.ArmConstants.elbowArmLengthInch - 
-      2 * Constants.ArmConstants.elbowArmLengthInch * Constants.ArmConstants.shoulderArmLengthInch * 
+      ArmConstants.shoulderArmLengthInch * ArmConstants.shoulderArmLengthInch + 
+      ArmConstants.elbowArmLengthInch * ArmConstants.elbowArmLengthInch - 
+      2 * ArmConstants.elbowArmLengthInch * ArmConstants.shoulderArmLengthInch * 
       Math.cos(targetElbowAngle)
      );
-     double oppositeElbowAngle = targetElbowAngle * Constants.ArmConstants.elbowArmLengthInch / 
-      Constants.ArmConstants.shoulderArmLengthInch;
+     double oppositeElbowAngle = targetElbowAngle * ArmConstants.elbowArmLengthInch / 
+      ArmConstants.shoulderArmLengthInch;
     double thirdSideHorizontalAngle = Math.PI / 2 - Math.abs(targetShoulderAngle) - oppositeElbowAngle;
     double y = thirdSide * Math.sin(thirdSideHorizontalAngle);
     double x = thirdSide * Math.cos(thirdSideHorizontalAngle);
-    if (targetElbowAngle > 0){
+    if (targetElbowAngle * targetShoulderAngle < 0){
       if (y > 78 || x > 66){
         return true;
       }else return false;
@@ -60,7 +60,7 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putNumber("ElbowEncoder", elbowMotor.getSelectedSensorPosition());
 		SmartDashboard.putNumber("ShouldrEncoder", shoulderMotor.getSelectedSensorPosition());
   }
-  
+
   public void run(double targetElbowAngle, double targetShoulderAngle){
     if (isOverLimit(targetShoulderAngle, targetElbowAngle)){
       SmartDashboard.putBoolean("ArmTargetisOverLimit", true);
