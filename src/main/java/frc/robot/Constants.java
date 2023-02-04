@@ -28,11 +28,10 @@ public class Constants {
                 kTrackwidthMeters);
         public static final double kWheelDiameterMeters = 0.152;
         //Need to be tuned
-        //public final static double LINEAR_P = 1.5; //0.5 bad. 1 ok. 1.5 ok. 2 is pretty good
-        public final static double LINEAR_P = 0.0;
+        public final static double LINEAR_P = 1.5; //0.5 bad. 1 ok. 1.5 ok. 2 is pretty good
         public final static double LINEAR_D = 0.0;
         // public final static double ANGULAR_P = 0.002;
-        public final static double ANGULAR_P = 0.1; // > 0.2 is no bueno
+        public final static double ANGULAR_P = 0.05; // > 0.2 is no bueno < 0.02 is muy no bueno 0.025 is maybe
         public final static double ANGULAR_D = 0.0;
     }
     public static class VisionConstants {

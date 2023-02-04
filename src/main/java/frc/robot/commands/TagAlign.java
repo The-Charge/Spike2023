@@ -50,8 +50,8 @@ public class TagAlign extends CommandBase {
             SmartDashboard.putNumber("Range", range);
             //calculate and feed speed values into runArcade in Drivetrain
             forwardSpeed = -forwardController.calculate(range, GOAL_RANGE_METERS);
-            rotationSpeed = -turnController.calculate(result.getBestTarget().getYaw(), 0);
-            bestTargetYaw = result.getBestTarget().getYaw();
+            rotationSpeed = turnController.calculate(result.getBestTarget().getYaw(), 0);
+            bestTargetYaw = Math.abs(result.getBestTarget().getYaw());
             SmartDashboard.putNumber("forward", forwardSpeed);
             SmartDashboard.putNumber("Rotation", rotationSpeed);
             SmartDashboard.putNumber("Target Yaw",  result.getBestTarget().getYaw());
@@ -67,10 +67,7 @@ public class TagAlign extends CommandBase {
     }
     @Override
     public boolean isFinished() {
-        // if (Math.abs(GOAL_RANGE_METERS - range) < 0.05) {
-        //     return true;
-        // }
-        if (bestTargetYaw > 0 && bestTargetYaw < 5) {
+        if (Math.abs(GOAL_RANGE_METERS - range) < 0.05 && bestTargetYaw < 2) {
             return true;
         }
         return false;
