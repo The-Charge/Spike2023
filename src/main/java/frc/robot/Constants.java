@@ -28,10 +28,11 @@ public class Constants {
                 kTrackwidthMeters);
         public static final double kWheelDiameterMeters = 0.152;
         //Need to be tuned
-        public final static double LINEAR_P = 0.5;
+        //public final static double LINEAR_P = 1.5; //0.5 bad. 1 ok. 1.5 ok. 2 is pretty good
+        public final static double LINEAR_P = 0.0;
         public final static double LINEAR_D = 0.0;
         // public final static double ANGULAR_P = 0.002;
-        public final static double ANGULAR_P = SmartDashboard.getNumber("Angular P", 0);
+        public final static double ANGULAR_P = 0.1; // > 0.2 is no bueno
         public final static double ANGULAR_D = 0.0;
     }
     public static class VisionConstants {
@@ -39,7 +40,7 @@ public class Constants {
         public static final String tapeCameraName = "HD_Webcam_C615";
 
         public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(8); //Height of camera on robot
-        public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0); //VERY IMPORTANT
+        public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(10); //VERY IMPORTANT
     }
 }
 

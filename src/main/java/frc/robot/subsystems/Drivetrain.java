@@ -89,6 +89,18 @@ private WPI_TalonFX rightBackMotor;
 	}
 	//Arcade control for TagAlign testing
 	public void runArcade(double f, double r) {
+		// if (f > 0.5) {
+		// 	differentialDrive.arcadeDrive(0.5, r);
+		// }
+		// else if (f < 0.3 && f > 0 ) {
+		// 	differentialDrive.arcadeDrive(0.3, r);
+		// }
+		// else if (f > -0.3 && f < 0) {
+		// 	differentialDrive.arcadeDrive(-0.3, r);
+		// }
+		// else {
+		// 	differentialDrive.arcadeDrive(f, r);
+		// }
 		differentialDrive.arcadeDrive(f, r);
 	}
 	public void stop() {

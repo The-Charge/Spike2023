@@ -18,6 +18,7 @@ public class TagAlign extends CommandBase {
     private final Camera m_camera;
     public double TARGET_HEIGHT_METERS = 0; //Height of target (to be changed)
     final double GOAL_RANGE_METERS = Units.feetToMeters(2); //distance to reach between tag and robot
+    public double range, bestTargetYaw;
 
     //PIDControllers from example: adjust as needed
     private final PIDController forwardController = new PIDController(DriveConstants.LINEAR_P, 0, DriveConstants.LINEAR_D);
@@ -44,14 +45,16 @@ public class TagAlign extends CommandBase {
             else {
                 TARGET_HEIGHT_METERS = Units.inchesToMeters(24.38);
             }
-            double range = PhotonUtils.calculateDistanceToTargetMeters(VisionConstants.CAMERA_HEIGHT_METERS,
+            range = PhotonUtils.calculateDistanceToTargetMeters(VisionConstants.CAMERA_HEIGHT_METERS,
             TARGET_HEIGHT_METERS, VisionConstants.CAMERA_PITCH_RADIANS, Units.degreesToRadians(result.getBestTarget().getPitch()));
             SmartDashboard.putNumber("Range", range);
             //calculate and feed speed values into runArcade in Drivetrain
             forwardSpeed = -forwardController.calculate(range, GOAL_RANGE_METERS);
-            rotationSpeed = -turnController.calculate(result.getBestTarget().getYaw(), 0);  
+            rotationSpeed = -turnController.calculate(result.getBestTarget().getYaw(), 0);
+            bestTargetYaw = result.getBestTarget().getYaw();
             SmartDashboard.putNumber("forward", forwardSpeed);
             SmartDashboard.putNumber("Rotation", rotationSpeed);
+            SmartDashboard.putNumber("Target Yaw",  result.getBestTarget().getYaw());
             m_drivetrain.runArcade(forwardSpeed, rotationSpeed);
         }
         else {
@@ -60,7 +63,17 @@ public class TagAlign extends CommandBase {
             rotationSpeed = -RobotContainer.getInstance().getLeftJoystick().getY();
             m_drivetrain.run(forwardSpeed, rotationSpeed);
         }
+        SmartDashboard.putBoolean("TagAlign Finished", isFinished());
     }
-
+    @Override
+    public boolean isFinished() {
+        // if (Math.abs(GOAL_RANGE_METERS - range) < 0.05) {
+        //     return true;
+        // }
+        if (bestTargetYaw > 0 && bestTargetYaw < 5) {
+            return true;
+        }
+        return false;
+    }
 
 }
