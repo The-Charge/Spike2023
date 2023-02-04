@@ -91,34 +91,24 @@ public class Arm extends SubsystemBase {
       angles[0] = Math.abs(Math.PI/2 - oppositeElbowAngle - Math.atan(targetY/Math.abs(targetX)));
       if (targetX > 0) angles[0] = -angles[0];
       return angles;
-    } 
-      
-
-    
+    }   
     return angles;
   }
 
-  private boolean isOverLimit(double targetShoulderAngle, double targetElbowAngle){
-    double thirdSide = Math.sqrt(
+  public double[] getXY (){
+    double[] xy = new double[2];
+      double thirdSide = Math.sqrt(
       ArmConstants.shoulderArmLength * ArmConstants.shoulderArmLength + 
       ArmConstants.elbowArmLength * ArmConstants.elbowArmLength - 
       2 * ArmConstants.elbowArmLength * ArmConstants.shoulderArmLength * 
-      Math.cos(targetElbowAngle)
+      Math.cos(elbowAngle)
      );
-     double oppositeElbowAngle = targetElbowAngle * ArmConstants.elbowArmLength / 
+     double oppositeElbowAngle = elbowAngle * ArmConstants.elbowArmLength / 
       ArmConstants.shoulderArmLength;
-    double thirdSideHorizontalAngle = Math.PI / 2 - Math.abs(targetShoulderAngle) - oppositeElbowAngle;
-    double y = thirdSide * Math.sin(thirdSideHorizontalAngle);
-    double x = thirdSide * Math.cos(thirdSideHorizontalAngle);
-    if (targetElbowAngle * targetShoulderAngle < 0){
-      if (y > 78 || x > 66){
-        return true;
-      }else return false;
-    }else{
-      if (x > 78 || y > 66){
-        return true;
-      }else return false;
-    }
+    double thirdSideHorizontalAngle = Math.PI / 2 - Math.abs(shoulderAngle) - oppositeElbowAngle;
+    xy[1] = thirdSide * Math.sin(thirdSideHorizontalAngle);
+    xy[0] = thirdSide * Math.cos(thirdSideHorizontalAngle);
+    return xy;
   }
 
   @Override
@@ -135,6 +125,9 @@ public class Arm extends SubsystemBase {
   public void run(double shoulderSpeed, double elbowSpeed){
       elbowMotor.set(elbowSpeed);
       shoulderMotor.set(shoulderSpeed);
+  }
+  public double getElbowAngle(){
+    return elbowAngle;
   }
 }
 
