@@ -78,6 +78,23 @@ public class Arm extends SubsystemBase {
     // second value is for elbow angle to achieve the target x,y
     // third value is 1 if yes and -1 for no feasible solution.
     double[] angles = new double[3];
+    double thirdSide = Math.sqrt(targetX * targetX + targetY * targetY);
+    if (thirdSide + ArmConstants.elbowArmLength < ArmConstants.shoulderArmLength  || 
+    thirdSide > ArmConstants.elbowArmLength + ArmConstants.shoulderArmLength) angles[2] = -1;
+    else{
+     angles[2] = 1;
+      double oppositeElbowAngle = Math.acos((thirdSide * thirdSide + 
+      ArmConstants.shoulderArmLength * ArmConstants.shoulderArmLength - 
+      ArmConstants.elbowArmLength * ArmConstants.elbowArmLength) / 2 / ArmConstants.shoulderArmLength / 
+      thirdSide);
+      angles[1] = Math.asin(thirdSide * Math.sin(oppositeElbowAngle) / ArmConstants.elbowArmLength);
+      angles[0] = Math.abs(Math.PI/2 - oppositeElbowAngle - Math.atan(targetY/Math.abs(targetX)));
+      if (targetX > 0) angles[0] = -angles[0];
+      return angles;
+    } 
+      
+
+    
     return angles;
   }
 
