@@ -123,6 +123,12 @@ private WPI_TalonFX rightBackMotor;
 		rightFrontMotor.setNeutralMode(NeutralMode.Brake);
 		rightBackMotor.setNeutralMode(NeutralMode.Brake);
 	}
+	public void setCoastMode() {
+		leftFrontMotor.setNeutralMode(NeutralMode.Coast);
+		leftBackMotor.setNeutralMode(NeutralMode.Coast);
+		rightFrontMotor.setNeutralMode(NeutralMode.Coast);
+		rightBackMotor.setNeutralMode(NeutralMode.Coast);
+	}
 	
 	public double getLeftEncoder() {
 		return leftFrontMotor.getSelectedSensorPosition();

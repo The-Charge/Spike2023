@@ -38,8 +38,11 @@ public class Constants {
         public static final String frontCameraName = "Logi_Webcam_C920e"; //Name for Logitech Camera
         public static final String tapeCameraName = "HD_Webcam_C615";
 
-        public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(8); //Height of camera on robot
-        public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(10); //VERY IMPORTANT
+        public static final double TAGCAMERA_HEIGHT_METERS = Units.inchesToMeters(8); //Height of camera on robot
+        public static final double TAGCAMERA_PITCH_RADIANS = Units.degreesToRadians(10); //VERY IMPORTANT
+    
+        public static final double TAPECAMERA_HEIGHT_METERS = Units.inchesToMeters(7.5); //Height of camera on robot
+        public static final double TAPECAMERA_PITCH_RADIANS = Units.degreesToRadians(20); 
     }
 }
 

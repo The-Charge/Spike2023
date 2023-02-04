@@ -45,8 +45,10 @@ public class RobotContainer {
         return m_robotContainer;
     }
     public void configureButtonBindings() {
-        JoystickButton alignButton = new JoystickButton(rightJoystick, 1);
-        alignButton.whileTrue(new TagAlign(m_drivetrain, m_camera)); //While held
+        JoystickButton tagAlignButton = new JoystickButton(rightJoystick, 1);
+        tagAlignButton.whileTrue(new TagAlign(m_drivetrain, m_camera)); //While held
+        JoystickButton tapeAlignButton = new JoystickButton(leftJoystick, 1);
+        tapeAlignButton.whileTrue(new TapeAlign(m_drivetrain, m_camera)); //While held
 
     }
 
