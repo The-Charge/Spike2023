@@ -59,10 +59,11 @@ public class Constants {
         public static final double elbowArmLength = 0.8128;
         public static final double shoulderHeight = 0.254;
         public static final double shoulderWeight = 5.443;
-        public static final double elbowMotorWeight = 0.907;
-        public static final double elbowWeight = 5.443;
+        public static final double elbowMotorWeight = 0.001;
+        public static final double elbowWeight = 0.001;
         public static final double elbowperMotorTick = 0.001;
-        public static final double shoulderperMotorTick = 0.001;
+        public static final double shoulderperMotorTick = 0.000194;
+
     }
 
     public static final class robotLimit{

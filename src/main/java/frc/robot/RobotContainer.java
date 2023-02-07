@@ -25,6 +25,7 @@ public class RobotContainer {
     private static RobotContainer m_robotContainer = new RobotContainer();
 
     public final Drivetrain m_drivetrain = new Drivetrain();
+    public final Arm m_arm = new Arm();
 
 // Joysticks
 private final Joystick buttonBox = new Joystick(2);
@@ -43,7 +44,8 @@ private final Joystick leftJoystick = new Joystick(0);
     RobotContainer() {
 
         //configureButtonBindings();
-    m_drivetrain.setDefaultCommand(new TankDrive( m_drivetrain ) );
+    //m_drivetrain.setDefaultCommand(new TankDrive( m_drivetrain ) );
+    m_arm.setDefaultCommand(new MoveArm(m_arm));
 
 
         SmartDashboard.putData("AutoSelect", m_chooser);

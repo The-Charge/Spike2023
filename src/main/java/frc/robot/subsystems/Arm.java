@@ -28,7 +28,7 @@ public class Arm extends SubsystemBase {
 		elbowMotor = new WPI_TalonFX(6);
     shoulderMotor.setInverted(true);
 		elbowMotor.setInverted(true);
-    shoulderMotor.setNeutralMode(NeutralMode.Brake);
+    shoulderMotor.setNeutralMode(NeutralMode.Coast);
 		elbowMotor.setNeutralMode(NeutralMode.Brake);
 
   }
@@ -119,7 +119,8 @@ public class Arm extends SubsystemBase {
     elbowAngle = elbowTicks * ArmConstants.elbowperMotorTick;
     shoulderAngle = shoulderTicks * ArmConstants.shoulderperMotorTick;
     SmartDashboard.putNumber("ElbowEncoder", elbowTicks);
-		SmartDashboard.putNumber("ShouldrEncoder", shoulderTicks);
+		SmartDashboard.putNumber("ShoulderEncoder", shoulderTicks);
+    SmartDashboard.putNumber("currentShoulderAngle", shoulderAngle);
   }
 
   public void run(double shoulderSpeed, double elbowSpeed){
@@ -128,6 +129,9 @@ public class Arm extends SubsystemBase {
   }
   public double getElbowAngle(){
     return elbowAngle;
+  }
+  public double getShoulderAngle(){
+    return shoulderAngle;
   }
 }
 
