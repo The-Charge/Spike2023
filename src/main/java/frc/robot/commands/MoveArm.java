@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.lang.annotation.Target;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.RobotContainer;
@@ -17,6 +18,9 @@ public class MoveArm extends CommandBase {
   private Arm m_arm;
   private double x;
   private double y;
+  private double middleAngle = 0.9;
+  private double angleRange = 0.8;
+  private double targetAngle = middleAngle;
 
   public MoveArm(Arm subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -42,9 +46,18 @@ public class MoveArm extends CommandBase {
    //   x = xy[0];
    //   y = xy[1];
    // }
-   if (Math.abs(shoulderSpeed) < 0.05){
-    holdPosition();
-   }else m_arm.run(shoulderSpeed, 0);
+   //if (Math.abs(shoulderSpeed) < 0.05){
+   // holdPosition();
+   //}else m_arm.run(shoulderSpeed, 0);
+   targetAngle = targetAngle + shoulderSpeed / 10;
+   if (targetAngle > middleAngle + angleRange){
+    targetAngle = middleAngle + angleRange;
+   }else if(targetAngle < middleAngle - angleRange){
+    targetAngle = middleAngle - angleRange;
+   }
+   SmartDashboard.putNumber("targetAngle", targetAngle);
+   SmartDashboard.putNumber("shouldrSpeed", shoulderSpeed);
+   holdPosition(); 
   }
 
   private void holdPosition(){
@@ -58,11 +71,11 @@ public class MoveArm extends CommandBase {
     //}else{
     //  m_arm.run(.5, .5);
     //}
-    if (m_arm.isShoulderWithGravity(0.6)){
-    m_arm.run(0.1 * (0.6 - currentShoulderAngle), 0);
-    }else {
-      m_arm.run(0.5 * (0.6 - currentShoulderAngle), 0);
-    }
+    //if (m_arm.isShoulderWithGravity(0.6)){
+    m_arm.run(0.1 * (targetAngle - currentShoulderAngle) - 0.04, 0);
+    //}else {
+    //  m_arm.run(0.5 * (targetAngle - currentShoulderAngle), 0);
+    //}
   }
 
   // Called once the command ends or is interrupted.
