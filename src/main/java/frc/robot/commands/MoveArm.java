@@ -21,6 +21,12 @@ public class MoveArm extends CommandBase {
   private double middleAngle = 0.9;
   private double angleRange = 0.8;
   private double targetAngle = middleAngle;
+  private double middleX = 60 * 0.0254;
+  private double middleY = 40 * 0.0254;
+  private double xRange = 10 * 0.0254;
+  private double yRange = 10 * 0.0254;
+  private double targetX = middleX;
+  private double targetY = middleY;
 
   public MoveArm(Arm subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -39,7 +45,15 @@ public class MoveArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double shoulderSpeed = -RobotContainer.getInstance().getrightJoystick().getY()/10;
+    //double shoulderSpeed = -RobotContainer.getInstance().getrightJoystick().getY()/10;
+    double xSpeed = -RobotContainer.getInstance().getrightJoystick().getY()/100;
+    double ySpeed = -RobotContainer.getInstance().getleftJoystick().getY()/100;
+    if (Math.abs(xSpeed) < 0.0005){
+      xSpeed = 0;
+    }
+    if (Math.abs(ySpeed) < 0.0005){
+      ySpeed = 0;
+    }
     // double elbowSpeed = -RobotContainer.getInstance().getleftJoystick().getY();
    // if (RobotContainer.getInstance().getrightJoystick().getTriggerPressed()){
    //   double[] xy = m_arm.getXY();
@@ -49,15 +63,26 @@ public class MoveArm extends CommandBase {
    //if (Math.abs(shoulderSpeed) < 0.05){
    // holdPosition();
    //}else m_arm.run(shoulderSpeed, 0);
-   targetAngle = targetAngle + shoulderSpeed / 10;
-   if (targetAngle > middleAngle + angleRange){
-    targetAngle = middleAngle + angleRange;
-   }else if(targetAngle < middleAngle - angleRange){
-    targetAngle = middleAngle - angleRange;
+   targetX = targetX + xSpeed;
+   targetY = targetY + ySpeed;
+   if (targetX > middleX + xRange){
+    targetX = middleX + xRange;
+   }else if (targetX < middleX - xRange){
+    targetX = middleX - xRange;
    }
-   SmartDashboard.putNumber("targetAngle", targetAngle);
-   SmartDashboard.putNumber("shouldrSpeed", shoulderSpeed);
-   holdPosition(); 
+   if (targetY > middleY + yRange){
+    targetY = middleY + yRange;
+   }else if (targetY < middleY - yRange){
+    targetY = middleY - yRange;
+   }
+   double getAngle[] = m_arm.getAngles(targetX, targetY);
+   if (getAngle[2] > 0){
+    SmartDashboard.putNumber("shoulderAngle", getAngle[0]);
+    SmartDashboard.putNumber("elbowAngle", getAngle[1]);
+   }
+   SmartDashboard.putNumber("targetX", targetX);
+   SmartDashboard.putNumber("targetY", targetY);
+   //holdPosition(); 
   }
 
   private void holdPosition(){
