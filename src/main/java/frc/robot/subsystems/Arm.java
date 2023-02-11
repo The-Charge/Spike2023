@@ -89,16 +89,15 @@ public class Arm extends SubsystemBase {
       thirdSide);
       angles[1] = Math.asin(thirdSide * Math.sin(oppositeElbowAngle) / ArmConstants.elbowArmLength);
       if (thirdSide * thirdSide > ArmConstants.shoulderArmLength * ArmConstants.shoulderArmLength + 
-      ArmConstants.elbowArmLength + ArmConstants.elbowArmLength
-      ){
-        if (angles[1] > 0){
+        ArmConstants.elbowArmLength + ArmConstants.elbowArmLength){
         angles[1] = Math.PI - angles[1];
-        }else{
-          angles[1] = -Math.PI - angles[1];
-        }
       }
+      
       angles[0] = Math.abs(Math.PI/2 - oppositeElbowAngle - Math.atan(targetY/Math.abs(targetX)));
       if (targetX > 0) angles[0] = -angles[0];
+      if (angles[0] > 0){
+        angles[1] = -angles[1];
+      }
       return angles;
     }   
     return angles;

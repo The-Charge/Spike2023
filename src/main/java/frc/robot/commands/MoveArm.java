@@ -82,6 +82,7 @@ public class MoveArm extends CommandBase {
    }
    SmartDashboard.putNumber("targetX", targetX);
    SmartDashboard.putNumber("targetY", targetY);
+   SmartDashboard.putNumber("ySpeed", ySpeed);
    //holdPosition(); 
   }
 
