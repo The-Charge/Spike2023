@@ -96,6 +96,7 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putBoolean("IMU_Connected", m_gyro.isConnected());
       SmartDashboard.putNumber("IMU_Yaw", m_gyro.getYaw());
       SmartDashboard.putNumber("IMU_Pitch", m_gyro.getPitch());
+      SmartDashboard.putNumber(   "IMU_Accel_Y",m_gyro.getWorldLinearAccelY());
       SmartDashboard.putNumber("IMU_Roll", m_gyro.getRoll());
     //  SmartDashboard.putNumber("Left_Encoder", leftFrontMotor.getSelectedSensorPosition(0));
       //SmartDashboard.putNumber("Right_Encoder", rightFrontMotor.getSelectedSensorPosition(0));

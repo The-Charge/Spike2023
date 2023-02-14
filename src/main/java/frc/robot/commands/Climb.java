@@ -28,12 +28,13 @@ public class Climb extends CommandBase {
   public void execute() {
     double leftSpeed, rightSpeed;
     leftSpeed = m_drivetrain.getPitch()*0.05;
-    if(leftSpeed > .2){
-      leftSpeed = .2;
+    if(leftSpeed > .15){
+      leftSpeed = .15;
     }
-    if(leftSpeed < -.2){
-      leftSpeed = -.2;
+    if(leftSpeed < -.15){
+      leftSpeed = -.15;
     }
+    
     rightSpeed = leftSpeed;
     
    // rightSpeed = -RobotContainer.getInstance().getrightJoystick().getY();
