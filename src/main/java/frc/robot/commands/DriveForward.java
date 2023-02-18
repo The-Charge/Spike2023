@@ -12,6 +12,8 @@ public class DriveForward extends CommandBase {
   private final Drivetrain m_drivetrain;
   private final double m_speed; 
   private final double m_stopPitch;
+  private long endTime = 0;
+  private boolean isTimeMode = false;
   private double thisPitch;
   /**
    *
@@ -28,7 +30,9 @@ public class DriveForward extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    isTimeMode = false;
     m_drivetrain.initializeMotors();
+    m_drivetrain.setNeutralMode();
     thisPitch = m_drivetrain.getPitch();
   }
 
@@ -38,6 +42,9 @@ public class DriveForward extends CommandBase {
     thisPitch = m_drivetrain.getPitch();
     if (Math.abs(thisPitch) < m_stopPitch){
       m_drivetrain.run(m_speed,m_speed);
+    }else if (!isTimeMode){
+      endTime = System.currentTimeMillis() + 2170;
+      isTimeMode = true;
     }
   }
   // Called once the command ends or is interrupted.
@@ -47,7 +54,7 @@ public class DriveForward extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Math.abs(thisPitch) >= m_stopPitch){
+    if (isTimeMode && System.currentTimeMillis() > endTime){
       m_drivetrain.run(0,0);
       return true;
     }
