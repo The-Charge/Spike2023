@@ -68,7 +68,7 @@ public class Drivetrain extends SubsystemBase {
     try { m_gyro = new AHRS(SPI.Port.kMXP);} catch (RuntimeException ex ) {DriverStation.reportError( ex.getMessage(), true);} 
     Timer.delay(1.0);  
     //m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), 0, 0, new Pose2d(0, 0, new Rotation2d()));
-    
+    resetHeading();
   }
 
   public CommandBase exampleMethodCommand() {
@@ -94,13 +94,9 @@ public class Drivetrain extends SubsystemBase {
   public void periodic() {
       // This method will be called once per scheduler run
       SmartDashboard.putBoolean("IMU_Connected", m_gyro.isConnected());
-      SmartDashboard.putNumber("IMU_Yaw", m_gyro.getYaw());
+      //SmartDashboard.putNumber("IMU_Yaw", m_gyro.getYaw());
       SmartDashboard.putNumber("IMU_Pitch", m_gyro.getPitch());
-      SmartDashboard.putNumber(   "IMU_Accel_Y",m_gyro.getWorldLinearAccelY());
-      SmartDashboard.putNumber("IMU_Roll", m_gyro.getRoll());
-      SmartDashboard.putNumber(   "RawAccel_X",m_gyro.getRawAccelX());
-          SmartDashboard.putNumber(   "RawAccel_Y",m_gyro.getRawAccelY());
-          SmartDashboard.putNumber(   "RawAccel_Z",m_gyro.getRawAccelZ()); //  SmartDashboard.putNumber("Left_Encoder", leftFrontMotor.getSelectedSensorPosition(0));
+      SmartDashboard.putNumber("Left_Encoder", leftFrontMotor.getSelectedSensorPosition(0));
       //SmartDashboard.putNumber("Right_Encoder", rightFrontMotor.getSelectedSensorPosition(0));
       // m_odometry.update(Rotation2d.fromDegrees(getHeading()),
         //leftFrontMotor.getSelectedSensorPosition(0) * DriveConstants.kEncoderDistancePerPulse,
@@ -137,20 +133,15 @@ public class Drivetrain extends SubsystemBase {
 
 	  leftFrontMotor.configNeutralDeadband(0.08);
 	  rightFrontMotor.configNeutralDeadband(0.08);
-  
-    setBrakeMode();
   }
   
   public void setBrakeMode() {
     leftFrontMotor.setNeutralMode(NeutralMode.Brake);
     rightFrontMotor.setNeutralMode(NeutralMode.Brake);
-}
-public void setNeutralMode() {
-  leftFrontMotor.setNeutralMode(NeutralMode.Coast);
-  rightFrontMotor.setNeutralMode(NeutralMode.Coast);
-}
-  public double getYAcceleration(){
-    return m_gyro.getRawAccelY();
+  }
+  public void setNeutralMode() {
+    leftFrontMotor.setNeutralMode(NeutralMode.Coast);
+    rightFrontMotor.setNeutralMode(NeutralMode.Coast);
   }
   
   public double getPitch(){
@@ -161,8 +152,16 @@ public void setNeutralMode() {
 		return m_gyro.getRotation2d().getDegrees() - gyroOffset;
 	}
 
+  public void resetHeading() {
+    gyroOffset = m_gyro.getRotation2d().getDegrees();
+  }
+
   public void isReversed(){
     InvertSpeed = !InvertSpeed;
+  }
+
+  public double getLeftEncoder(){
+    return leftFrontMotor.getSelectedSensorPosition(0);
   }
 
   public void stop() {

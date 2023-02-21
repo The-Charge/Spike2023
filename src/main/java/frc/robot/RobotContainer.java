@@ -32,16 +32,15 @@ public class RobotContainer {
     RobotContainer() {
 
         //configureButtonBindings();
-        m_drivetrain.setDefaultCommand(new SequentialCommandGroup(
-            new DriveForward(m_drivetrain, .2, 13), new Climb(m_drivetrain)));
+        m_drivetrain.setDefaultCommand(new TankDrive(m_drivetrain));
 
         m_chooser.addOption("DriveAndClimb", new SequentialCommandGroup(
-            new DriveForward(m_drivetrain, .2, 5), new Climb(m_drivetrain)));
+            new DriveForward(m_drivetrain, .3, 10), new Climb(m_drivetrain)));
         m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
         SmartDashboard.putData("AutoSelect", m_chooser);
 
         SmartDashboard.putData("drive_climb", new SequentialCommandGroup(
-            new DriveForward(m_drivetrain, .2, 5), new Climb(m_drivetrain)));
+            new DriveForward(m_drivetrain, .2, 10), new Climb(m_drivetrain)));
     }
 
     public static RobotContainer getInstance() {

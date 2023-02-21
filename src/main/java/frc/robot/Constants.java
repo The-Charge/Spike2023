@@ -75,6 +75,11 @@ public class Constants {
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
     
+        public static final double climbPowerLimit = 0.13;
+        public static final double climbPowerForwardBias = 0.07;
+        public static final double climbPowerBackwardBias = -0.08;
+        public static final double climbPitchGain = 0.01;
+        public static final double climbPitchDerivativeGain = 0.15;
     }
 }
 
