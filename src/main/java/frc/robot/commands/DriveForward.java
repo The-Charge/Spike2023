@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.commands;
 
+import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -33,18 +34,20 @@ public class DriveForward extends CommandBase {
     m_drivetrain.initializeMotors();
     m_drivetrain.setNeutralMode();
     thisPitch = m_drivetrain.getPitch();
+    m_drivetrain.resetHeading();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     thisPitch = m_drivetrain.getPitch();
+    double thisHeading = m_drivetrain.getHeading() * AutoConstants.headingGain;
     if (Math.abs(thisPitch) > m_stopPitch && !isTimeMode){
       startTick = m_drivetrain.getLeftEncoder();//endTime = System.currentTimeMillis() + 2170;
       isTimeMode = true;
       m_speed = m_speed/Math.abs(m_speed)*0.35;
     }
-    m_drivetrain.run(m_speed,m_speed);
+    m_drivetrain.run(m_speed + thisHeading, m_speed - thisHeading);
   }
 
   // Called once the command ends or is interrupted.

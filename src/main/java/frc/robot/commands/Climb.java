@@ -36,6 +36,7 @@ public class Climb extends CommandBase {
   @Override
   public void execute() {
     double thisPitch = m_drivetrain.getPitch();
+    double thisHeading = m_drivetrain.getHeading() * AutoConstants.headingGain / 2;
     double volt = thisPitch*AutoConstants.climbPitchGain + 
                   (thisPitch-lastPitch)*AutoConstants.climbPitchDerivativeGain;
     lastPitch = thisPitch;
@@ -48,7 +49,7 @@ public class Climb extends CommandBase {
     }else timesAtLevel++;
     if(volt > AutoConstants.climbPowerLimit) volt = AutoConstants.climbPowerLimit;
     else if (volt < -AutoConstants.climbPowerLimit) volt = -AutoConstants.climbPowerLimit;
-    m_drivetrain.run(volt, volt);
+    m_drivetrain.run(volt + thisHeading, volt - thisHeading);
   }
 
   // Called once the command ends or is interrupted.

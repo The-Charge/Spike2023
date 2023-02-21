@@ -93,10 +93,11 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
       // This method will be called once per scheduler run
-      SmartDashboard.putBoolean("IMU_Connected", m_gyro.isConnected());
+      //SmartDashboard.putBoolean("IMU_Connected", m_gyro.isConnected());
       //SmartDashboard.putNumber("IMU_Yaw", m_gyro.getYaw());
-      SmartDashboard.putNumber("IMU_Pitch", m_gyro.getPitch());
-      SmartDashboard.putNumber("Left_Encoder", leftFrontMotor.getSelectedSensorPosition(0));
+      //SmartDashboard.putNumber("IMU_Pitch", m_gyro.getPitch());
+      //SmartDashboard.putNumber("Left_Encoder", leftFrontMotor.getSelectedSensorPosition(0));
+      SmartDashboard.putNumber("heading", getHeading());
       //SmartDashboard.putNumber("Right_Encoder", rightFrontMotor.getSelectedSensorPosition(0));
       // m_odometry.update(Rotation2d.fromDegrees(getHeading()),
         //leftFrontMotor.getSelectedSensorPosition(0) * DriveConstants.kEncoderDistancePerPulse,
