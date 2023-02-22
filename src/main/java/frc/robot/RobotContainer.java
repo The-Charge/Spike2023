@@ -35,12 +35,21 @@ public class RobotContainer {
         m_drivetrain.setDefaultCommand(new TankDrive(m_drivetrain));
 
         m_chooser.addOption("DriveAndClimb", new SequentialCommandGroup(
-            new DriveForward(m_drivetrain, .3, 10), new Climb(m_drivetrain)));
+            new DriveForward(m_drivetrain, -.3, 10), new Climb(m_drivetrain)));
         m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
+  
+        m_chooser.addOption("DriveOver", new DriveOver(m_drivetrain, .3, 10));
+
+        m_chooser.addOption("DriveOverBackClimb", new SequentialCommandGroup(new DriveOver(m_drivetrain, -.3, 10), 
+        new DriveForward(m_drivetrain, 0.3, 10), new Climb(m_drivetrain)));
+        
         SmartDashboard.putData("AutoSelect", m_chooser);
+ 
+        SmartDashboard.putData("DriveOverBackClimb", new SequentialCommandGroup(new DriveOver(m_drivetrain, -.3, 10), 
+        new DriveForward(m_drivetrain, 0.3, 10), new Climb(m_drivetrain)));
 
         SmartDashboard.putData("drive_climb", new SequentialCommandGroup(
-            new DriveForward(m_drivetrain, .2, 10), new Climb(m_drivetrain)));
+            new DriveForward(m_drivetrain, -.3, 10), new Climb(m_drivetrain)));
     }
 
     public static RobotContainer getInstance() {
