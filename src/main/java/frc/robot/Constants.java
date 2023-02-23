@@ -80,6 +80,7 @@ public class Constants {
         public static final double climbPowerBackwardBias = -0.08;
         public static final double climbPitchGain = 0.01;
         public static final double climbPitchDerivativeGain = 0.15;
+        public static final double fastClimbTicks = 53000;
         public static final double headingGain = 0.02;
     }
 }

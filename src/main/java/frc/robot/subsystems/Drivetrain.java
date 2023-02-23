@@ -4,59 +4,30 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
-import com.ctre.phoenix.motorcontrol.StatusFrame;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI; 
-import com.kauailabs.navx.frc.AHRS.SerialDataType;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SerialPort; //might change to I2C
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import frc.robot.Constants.DriveConstants;
 
 public class Drivetrain extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
-  
-
   private WPI_TalonFX leftFrontMotor;
   private WPI_TalonFX leftBackMotor;
   private WPI_TalonFX rightFrontMotor;
   private WPI_TalonFX rightBackMotor;
 
-
-  private MotorControllerGroup m_leftMotors; 
-
-  private MotorControllerGroup m_rightMotors;
-
   public boolean InvertSpeed = false; 
 
   private AHRS m_gyro;
+  private double pitch = 0;
   private double gyroOffset = 0;
+  private double pitchOffset = 0;
  // public final DifferentialDriveOdometry m_odometry;
 
 
@@ -69,6 +40,7 @@ public class Drivetrain extends SubsystemBase {
     Timer.delay(1.0);  
     //m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), 0, 0, new Pose2d(0, 0, new Rotation2d()));
     resetHeading();
+    resetPitch();
   }
 
   public CommandBase exampleMethodCommand() {
@@ -92,14 +64,10 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-      // This method will be called once per scheduler run
-      //SmartDashboard.putBoolean("IMU_Connected", m_gyro.isConnected());
-      //SmartDashboard.putNumber("IMU_Yaw", m_gyro.getYaw());
-      //SmartDashboard.putNumber("IMU_Pitch", m_gyro.getPitch());
-      //SmartDashboard.putNumber("Left_Encoder", leftFrontMotor.getSelectedSensorPosition(0));
-      SmartDashboard.putNumber("heading", getHeading());
-      //SmartDashboard.putNumber("Right_Encoder", rightFrontMotor.getSelectedSensorPosition(0));
-      // m_odometry.update(Rotation2d.fromDegrees(getHeading()),
+    // This method will be called once per scheduler run
+    pitch = m_gyro.getPitch() - pitchOffset;
+    SmartDashboard.putNumber("IMU_Pitch", pitch);
+          // m_odometry.update(Rotation2d.fromDegrees(getHeading()),
         //leftFrontMotor.getSelectedSensorPosition(0) * DriveConstants.kEncoderDistancePerPulse,
        // rightFrontMotor.getSelectedSensorPosition(0) * DriveConstants.kEncoderDistancePerPulse
       //);
@@ -145,29 +113,20 @@ public class Drivetrain extends SubsystemBase {
     rightFrontMotor.setNeutralMode(NeutralMode.Coast);
   }
   
-  public double getPitch(){
-   return m_gyro.getPitch();
-  }
+  public double getPitch(){ return pitch;}
 
-  public double getHeading() {
-		return m_gyro.getRotation2d().getDegrees() - gyroOffset;
-	}
+  public void resetPitch(){ pitchOffset = m_gyro.getPitch();}
 
-  public void resetHeading() {
-    gyroOffset = m_gyro.getRotation2d().getDegrees();
-  }
+  public double getHeading() { return m_gyro.getRotation2d().getDegrees() - gyroOffset;}
 
-  public void isReversed(){
-    InvertSpeed = !InvertSpeed;
-  }
+  public void resetHeading() { gyroOffset = m_gyro.getRotation2d().getDegrees();}
 
-  public double getLeftEncoder(){
-    return leftFrontMotor.getSelectedSensorPosition(0);
-  }
+  public void isReversed(){ InvertSpeed = !InvertSpeed;}
+
+  public double getLeftEncoder(){ return leftFrontMotor.getSelectedSensorPosition(0);}
 
   public void stop() {
 		leftFrontMotor.set(ControlMode.PercentOutput, 0);
 		rightFrontMotor.set(ControlMode.PercentOutput, 0);
 	}
-
 }

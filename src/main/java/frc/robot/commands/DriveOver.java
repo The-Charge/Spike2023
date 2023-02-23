@@ -5,15 +5,13 @@ package frc.robot.commands;
 
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.Drivetrain;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 public class DriveOver extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Drivetrain m_drivetrain;
   private double m_speed; 
-  private final double m_stopPitch; //private long endTime = 0;
-  private double startTick = 0;
-  private boolean isTimeMode = false;
+  private final double m_stopPitch; 
   private double thisPitch;
   private int status = 0;
   // 0 is flat starting state, 1 for up, 2 for flat top, 3 for down, 4 for flat end.
@@ -25,18 +23,14 @@ public class DriveOver extends CommandBase {
     m_drivetrain = subsystem;
     m_speed = speed;
     m_stopPitch = stopPitch;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    isTimeMode = false;
     m_drivetrain.initializeMotors();
     m_drivetrain.setNeutralMode();
-    thisPitch = m_drivetrain.getPitch();
-    m_drivetrain.resetHeading();
     status = 0;
   }
 
@@ -46,16 +40,14 @@ public class DriveOver extends CommandBase {
     thisPitch = m_drivetrain.getPitch();
     double thisHeading = m_drivetrain.getHeading() * AutoConstants.headingGain;
     if (status == 0){
-      if (Math.abs(thisPitch) > m_stopPitch){
-        status = 1;
-      }
+      if (Math.abs(thisPitch) > m_stopPitch) status = 1;
     }else if (status == 1){
       if (Math.abs(thisPitch) < 2){
         status = 2;
         m_speed = m_speed * 0.8;
       }
     }else if(status == 2){
-      if (Math.abs(thisPitch) > 8){
+      if (Math.abs(thisPitch) > m_stopPitch * 0.8){
         status = 3;
         m_speed = m_speed * .7;
       }
@@ -73,7 +65,6 @@ public class DriveOver extends CommandBase {
     if (status == 3){
       if (Math.abs(thisPitch) < 1){
         m_drivetrain.run(0,0);
-        isTimeMode = true;
         status++;
       } ;
     }
@@ -81,7 +72,4 @@ public class DriveOver extends CommandBase {
     if (status > 50) return true;
     return false;
   }
-
-  @Override
-  public boolean runsWhenDisabled() {return false;}
 }

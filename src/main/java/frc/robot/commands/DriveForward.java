@@ -5,16 +5,15 @@ package frc.robot.commands;
 
 import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.Drivetrain;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 public class DriveForward extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Drivetrain m_drivetrain;
   private double m_speed; 
-  private final double m_stopPitch; //private long endTime = 0;
+  private final double m_stopPitch;
   private double startTick = 0;
   private boolean isTimeMode = false;
-  private double thisPitch;
+  private double thisPitch = 0;
   /**
    *
    * @param subsystem The subsystem used by this command.
@@ -23,7 +22,6 @@ public class DriveForward extends CommandBase {
     m_drivetrain = subsystem;
     m_speed = speed;
     m_stopPitch = stopPitch;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
 
@@ -33,8 +31,6 @@ public class DriveForward extends CommandBase {
     isTimeMode = false;
     m_drivetrain.initializeMotors();
     m_drivetrain.setNeutralMode();
-    thisPitch = m_drivetrain.getPitch();
-    m_drivetrain.resetHeading();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,9 +39,8 @@ public class DriveForward extends CommandBase {
     thisPitch = m_drivetrain.getPitch();
     double thisHeading = m_drivetrain.getHeading() * AutoConstants.headingGain;
     if (Math.abs(thisPitch) > m_stopPitch && !isTimeMode){
-      startTick = m_drivetrain.getLeftEncoder();//endTime = System.currentTimeMillis() + 2170;
+      startTick = m_drivetrain.getLeftEncoder();
       isTimeMode = true;
-      m_speed = m_speed/Math.abs(m_speed)*0.35;
     }
     m_drivetrain.run(m_speed + thisHeading, m_speed - thisHeading);
   }
@@ -57,15 +52,12 @@ public class DriveForward extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double tickDiff = m_drivetrain.getLeftEncoder() - startTick;
-    SmartDashboard.putNumber("tick difference", tickDiff);
     if (isTimeMode && 
-        ((Math.abs(tickDiff) > 55000) || (Math.abs(thisPitch) < Math.abs(m_stopPitch)/2))){
+        ((Math.abs(m_drivetrain.getLeftEncoder() - startTick) > AutoConstants.fastClimbTicks) 
+         || (Math.abs(thisPitch) < Math.abs(m_stopPitch)/2))){
       m_drivetrain.run(0,0);
       return true;
-    } else return false;
+    }
+    return false;
   }
-
-  @Override
-  public boolean runsWhenDisabled() {return false;}
 }

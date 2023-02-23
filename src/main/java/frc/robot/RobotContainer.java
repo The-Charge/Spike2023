@@ -34,22 +34,30 @@ public class RobotContainer {
         //configureButtonBindings();
         m_drivetrain.setDefaultCommand(new TankDrive(m_drivetrain));
 
-        m_chooser.addOption("DriveAndClimb", new SequentialCommandGroup(
-            new DriveForward(m_drivetrain, -.3, 10), new Climb(m_drivetrain)));
+        SequentialCommandGroup driveAndClimb = new SequentialCommandGroup(
+            new ResetHeading(m_drivetrain),
+            new ResetPitch(m_drivetrain),
+            new DriveForward(m_drivetrain, .35, 10),
+            new Climb(m_drivetrain));
+        SequentialCommandGroup driveOver = new SequentialCommandGroup(
+            new ResetHeading(m_drivetrain),
+            new ResetPitch(m_drivetrain),
+            new DriveOver(m_drivetrain, .35, 0));
+        SequentialCommandGroup driverOverBackClimb = new SequentialCommandGroup(
+            new ResetHeading(m_drivetrain),
+            new ResetPitch(m_drivetrain),
+            new DriveOver(m_drivetrain, -.35, 10),
+            new DriveForward(m_drivetrain, .35, 10),
+            new Climb(m_drivetrain));
+        m_chooser.addOption("DriveAndClimb", driveAndClimb);
         m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
-  
-        m_chooser.addOption("DriveOver", new DriveOver(m_drivetrain, .3, 10));
-
-        m_chooser.addOption("DriveOverBackClimb", new SequentialCommandGroup(new DriveOver(m_drivetrain, -.3, 10), 
-        new DriveForward(m_drivetrain, 0.3, 10), new Climb(m_drivetrain)));
-        
+        m_chooser.addOption("DriveOver", driveOver);
+        m_chooser.addOption("DriveOverBackClimb", driverOverBackClimb);
         SmartDashboard.putData("AutoSelect", m_chooser);
  
-        SmartDashboard.putData("DriveOverBackClimb", new SequentialCommandGroup(new DriveOver(m_drivetrain, -.3, 10), 
-        new DriveForward(m_drivetrain, 0.3, 10), new Climb(m_drivetrain)));
-
-        SmartDashboard.putData("drive_climb", new SequentialCommandGroup(
-            new DriveForward(m_drivetrain, -.3, 10), new Climb(m_drivetrain)));
+        SmartDashboard.putData("DriveOverBackClimb", driverOverBackClimb);
+        SmartDashboard.putData("drive_climb", driveAndClimb);
+        SmartDashboard.putData("Drive Over", driveOver);
     }
 
     public static RobotContainer getInstance() {
