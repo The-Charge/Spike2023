@@ -6,9 +6,16 @@ package frc.robot.commands;
 
 import java.lang.annotation.Target;
 
+import edu.wpi.first.math.controller.ElevatorFeedforward;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.simulation.PWMSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Arm;
@@ -27,6 +34,19 @@ public class MoveArm extends CommandBase {
   private double yRange = 10 * 0.0254;
   private double targetX = middleX;
   private double targetY = middleY;
+
+  private PWMSim m_simMotor;
+  private final PWMSparkMax m_motor = new PWMSparkMax(Constants.ArmConstants.kMotorPort);
+
+  private final ProfiledPIDController m_controller =
+      new ProfiledPIDController(
+          Constants.DriveConstants.kPDriveVel,
+          Constants.DriveConstants.kIDriveVel,
+          Constants.DriveConstants.kDDriveVel,
+          new TrapezoidProfile.Constraints(2.45, 2.45));
+
+  private final Encoder m_encoder =
+    new Encoder(Constants.kEncoderAChannel, Constants.kEncoderBChannel);
 
   public MoveArm(Arm subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -84,6 +104,8 @@ public class MoveArm extends CommandBase {
    SmartDashboard.putNumber("targetY", targetY);
    SmartDashboard.putNumber("ySpeed", ySpeed);
    //holdPosition(); 
+
+   reachGoal(0);
   }
 
   private void holdPosition(){
@@ -102,6 +124,15 @@ public class MoveArm extends CommandBase {
     //}else {
     //  m_arm.run(0.5 * (targetAngle - currentShoulderAngle), 0);
     //}
+    
+  }
+
+  public void reachGoal(double goal) {
+    m_controller.setGoal(goal);
+
+    // With the setpoint value we run PID control like normal
+    double pidOutput = m_controller.calculate(m_arm.get());
+    m_motor.setVoltage(pidOutput /*+ feedforwardOutput*/);
   }
 
   // Called once the command ends or is interrupted.

@@ -55,6 +55,8 @@ public class Constants {
 
         // Example value only - as above, this must be tuned for your drive!
         public static final double kPDriveVel = 3.4457; //4
+        public static final double kIDriveVel = 0;
+        public static final double kDDriveVel = 0;
     }
 
     public static final class ArmConstants {
@@ -63,9 +65,10 @@ public class Constants {
         public static final double shoulderHeight = 0.254;
         public static final double shoulderWeight = 8;//TODO kg
         public static final double elbowMotorWeight = 0.001;
-        public static final double elbowWeight = 12;
-        public static final double elbowperMotorTick = 0.001;//TODO kg
+        public static final double elbowWeight = 12;//TODO kg
+        public static final double elbowperMotorTick = 0.001;
         public static final double shoulderperMotorTick = 0.000194;
+        public static final int kMotorPort = 1;
     }
 
     public static final class robotLimit{

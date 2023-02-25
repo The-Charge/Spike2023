@@ -29,7 +29,7 @@ public class Arm extends SubsystemBase {
   /** Creates a new Arm. */
   private WPI_TalonFX shoulderMotor;
 	private WPI_TalonFX elbowMotor;
-  private PWMSim m_simMotor;
+
 
   private final DCMotor gearbox = 
     new DCMotor(
@@ -39,6 +39,7 @@ public class Arm extends SubsystemBase {
       Constants.TalonFXConstants.freeCurrentAmps,
       Constants.TalonFXConstants.freeSpeedRadPerSec,
       1);
+
   private final SingleJointedArmSim m_armSim = 
     new SingleJointedArmSim(
       gearbox, 
@@ -79,18 +80,8 @@ public class Arm extends SubsystemBase {
     shoulderMotor.setNeutralMode(NeutralMode.Coast);
 		elbowMotor.setNeutralMode(NeutralMode.Brake);
 
-    m_simMotor = new PWMSim(Constants.DriveConstants.kLeftMotor1Port);
-  SmartDashboard.putData("Mech2d", m_mech2d);
+    SmartDashboard.putData("Mech2d", m_mech2d);
 
-  }
-
-  public void reachGoal(double goal) {
-    /*m_controller.setGoal(goal);
-
-    // With the setpoint value we run PID control like normal
-    double pidOutput = m_controller.calculate(m_encoder.getDistance());
-    double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
-    m_motor.setVoltage(pidOutput + feedforwardOutput);*/
   }
 
   public boolean isInLimit(double targetShoulderAngle, double targetElbowAngle){
