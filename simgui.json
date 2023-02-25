@@ -2,7 +2,15 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/SmartDashboard/AutoSelect": "String Chooser"
+      "/SmartDashboard/AutoSelect": "String Chooser",
+      "/SmartDashboard/Mech2d": "Mechanism2d"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "open": true
+      }
     }
   }
 }

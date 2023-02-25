@@ -8,12 +8,18 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.simulation.PWMSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.SimConstants;
 import frc.robot.Constants;
+import frc.robot.Constants.SimConstants;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.robotLimit;
 
@@ -23,10 +29,17 @@ public class Arm extends SubsystemBase {
   /** Creates a new Arm. */
   private WPI_TalonFX shoulderMotor;
 	private WPI_TalonFX elbowMotor;
-  private PWMSim test;
+  private PWMSim m_simMotor;
 
-  //private final DCMotor gearbox = ;
-  private final SingleJointedArmSim ArmSim = 
+  private final DCMotor gearbox = 
+    new DCMotor(
+      Constants.TalonFXConstants.nominalVoltageVolts,
+      Constants.TalonFXConstants.stallTorqueNewtonMeters,
+      Constants.TalonFXConstants.stallCurrentAmps,
+      Constants.TalonFXConstants.freeCurrentAmps,
+      Constants.TalonFXConstants.freeSpeedRadPerSec,
+      1);
+  private final SingleJointedArmSim m_armSim = 
     new SingleJointedArmSim(
       gearbox, 
       Constants.SimConstants.gearingShoulder, 
@@ -40,6 +53,22 @@ public class Arm extends SubsystemBase {
   private double shoulderAngle = 0;
   private double elbowAngle = 0;
 
+  // Create a Mechanism2d display of an Arm with a fixed ArmTower and moving Arm.
+  private final Mechanism2d m_mech2d = new Mechanism2d(60, 60);
+  private final MechanismRoot2d m_armPivot = m_mech2d.getRoot("ArmPivot", 30, 30);
+
+  private final MechanismLigament2d m_armTower =
+      m_armPivot.append(new MechanismLigament2d("ArmTower", 30, -90));
+
+  private final MechanismLigament2d m_arm =
+      m_armPivot.append(
+          new MechanismLigament2d(
+              "Arm",
+              30,
+              Units.radiansToDegrees(m_armSim.getAngleRads()),
+              6,
+              new Color8Bit(Color.kYellow)));
+
 
   public Arm() {
     shoulderMotor = new WPI_TalonFX(5);
@@ -50,6 +79,18 @@ public class Arm extends SubsystemBase {
     shoulderMotor.setNeutralMode(NeutralMode.Coast);
 		elbowMotor.setNeutralMode(NeutralMode.Brake);
 
+    m_simMotor = new PWMSim(Constants.DriveConstants.kLeftMotor1Port);
+  SmartDashboard.putData("Mech2d", m_mech2d);
+
+  }
+
+  public void reachGoal(double goal) {
+    /*m_controller.setGoal(goal);
+
+    // With the setpoint value we run PID control like normal
+    double pidOutput = m_controller.calculate(m_encoder.getDistance());
+    double feedforwardOutput = m_feedforward.calculate(m_controller.getSetpoint().velocity);
+    m_motor.setVoltage(pidOutput + feedforwardOutput);*/
   }
 
   public boolean isInLimit(double targetShoulderAngle, double targetElbowAngle){

@@ -1,1 +1,18 @@
-{}
+{
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "open": true
+      }
+    },
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/AutoSelect": "String Chooser",
+      "/SmartDashboard/Mech2d": "Mechanism2d"
+    }
+  },
+  "NetworkTables Settings": {
+    "mode": "Client (NT4)",
+    "serverTeam": "127.0.0.1"
+  }
+}

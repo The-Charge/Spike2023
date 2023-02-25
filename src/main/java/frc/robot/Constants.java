@@ -11,6 +11,8 @@
 
 package frc.robot;
 
+
+
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 
 /**
@@ -114,6 +116,17 @@ public class Constants {
         public static final double poundsToKg = 0.453592;
         public static final double armMassKg = (/*elbow*/12 + /*shoulder*/8) *.453592;
         //TODO 12 pounds elbow to claw, 8 shoulder to elbow
+    }
+
+    public static final class TalonFXConstants {
+        public static final double nominalVoltageVolts = 12;
+
+        public static final double stallTorqueNewtonMeters = 2.41;
+        public static final double stallCurrentAmps = 131;
+
+        public static final double freeCurrentAmps = 2.7;
+        //TODO going from RPM to RAD per sec
+        public static final double freeSpeedRadPerSec = 5310 * (Math.PI / 30); 
     }
 }
 

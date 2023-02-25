@@ -93,6 +93,13 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    /*if (m_joystick.getTrigger()) {
+      // Here, we set the constant setpoint of 0.75 meters.
+      m_elevator.reachGoal(Constants.SimConstants.kSetpointMeters);
+    } else {
+      // Otherwise, we update the setpoint to 0.
+      m_elevator.reachGoal(0.0);
+    }*/
   }
 
   @Override
