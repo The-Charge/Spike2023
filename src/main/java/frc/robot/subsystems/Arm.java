@@ -25,11 +25,11 @@ public class Arm extends SubsystemBase {
   public Arm() {
     shoulderMotor = new WPI_TalonFX(5);
 
-		elbowMotor = new WPI_TalonFX(6);
+		elbowMotor = shoulderMotor;//new WPI_TalonFX(6);
     shoulderMotor.setInverted(true);
 		elbowMotor.setInverted(true);
     shoulderMotor.setNeutralMode(NeutralMode.Coast);
-		elbowMotor.setNeutralMode(NeutralMode.Brake);
+		elbowMotor.setNeutralMode(NeutralMode.Coast);
 
   }
 
@@ -44,6 +44,14 @@ public class Arm extends SubsystemBase {
        y < - ArmConstants.shoulderHeight) return false;
     if(x > robotLimit.widthFromCenter) return false;
     if (x < robotLimit.robotLength / 2 && y < 0) return false;
+    return true;
+  }
+  public boolean isXYLimit(double x, double y){
+    if(y < -ArmConstants.shoulderHeight) return false;
+    if(y > robotLimit.height) return false;
+    if(x > robotLimit.widthFromCenter) return false;
+    if(x < -robotLimit.widthFromCenter) return false;
+    if(Math.abs(x) < robotLimit.robotLength && y < 0)return false;
     return true;
   }
 
@@ -78,6 +86,12 @@ public class Arm extends SubsystemBase {
     // second value is for elbow angle to achieve the target x,y
     // third value is 1 if yes and -1 for no feasible solution.
     double[] angles = new double[3];
+    if(Math.abs(targetX) < 0.01){
+      angles[0] = 0;
+      angles[1] = 0;
+      angles[2] = 1;
+      return angles;
+    }
     double thirdSide = Math.sqrt(targetX * targetX + targetY * targetY);
     if (thirdSide + ArmConstants.elbowArmLength < ArmConstants.shoulderArmLength  || 
     thirdSide > ArmConstants.elbowArmLength + ArmConstants.shoulderArmLength) angles[2] = -1;
@@ -105,13 +119,13 @@ public class Arm extends SubsystemBase {
 
   public double[] getXY (){
     double[] xy = new double[2];
-      double thirdSide = Math.sqrt(
+    double thirdSide = Math.sqrt(
       ArmConstants.shoulderArmLength * ArmConstants.shoulderArmLength + 
       ArmConstants.elbowArmLength * ArmConstants.elbowArmLength - 
       2 * ArmConstants.elbowArmLength * ArmConstants.shoulderArmLength * 
       Math.cos(elbowAngle)
      );
-     double oppositeElbowAngle = elbowAngle * ArmConstants.elbowArmLength / 
+    double oppositeElbowAngle = elbowAngle * ArmConstants.elbowArmLength / 
       ArmConstants.shoulderArmLength;
     double thirdSideHorizontalAngle = Math.PI / 2 - Math.abs(shoulderAngle) - oppositeElbowAngle;
     xy[1] = thirdSide * Math.sin(thirdSideHorizontalAngle);
@@ -129,10 +143,11 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putNumber("ElbowEncoder", elbowTicks);
 		SmartDashboard.putNumber("ShoulderEncoder", shoulderTicks);
     SmartDashboard.putNumber("currentShoulderAngle", shoulderAngle);
+    
   }
 
   public void run(double shoulderSpeed, double elbowSpeed){
-      elbowMotor.set(elbowSpeed);
+//      elbowMotor.set(elbowSpeed);
       shoulderMotor.set(shoulderSpeed);
   }
   public double getElbowAngle(){

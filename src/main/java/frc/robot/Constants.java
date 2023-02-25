@@ -55,15 +55,23 @@ public class Constants {
         public static final double kPDriveVel = 3.4457; //4
     }
     public static final class ArmConstants {
-        public static final double shoulderArmLength = 1.067;
-        public static final double elbowArmLength = 0.8128;
-        public static final double shoulderHeight = 0.254;
+        public static final double shoulderArmLength = 0.9906;
+        public static final double elbowArmLength = 0.9144;
+        public static final double shoulderHeight = 11*0.0254;
         public static final double shoulderWeight = 5.443;
         public static final double elbowMotorWeight = 0.001;
         public static final double elbowWeight = 0.001;
         public static final double elbowperMotorTick = 0.001;
         public static final double shoulderperMotorTick = 0.000194;
-
+        public static final int numberOfState = 5;
+        public static double[] targetShoulder = {0,-0.8,0.8,-0.6,0.6};
+        public static double[] targetElbow = {0,1.7,-1.7,2.9,-2.9};
+        public static double[] targetX ={0, 1.43, -1.43, 1.24, -1.24};
+        public static double[] targetY ={0.0762,0.12, 0.12, 1.42, 1.42};
+        public static double[] xRange = {0.2, 0.2, 0.2, 0.2, 0.2};
+        public static double[] yRange = {0.1, 0.1, 0.1, 0.1, 0.1};
+        public static double[] shoulderRestVoltage = {0.014, -0.2, 0.2, -0.1, 0.1}; 
+        public static double[] elbowRestVoltage = {0, -0.2, 0.2, -0.1, 0.1};
     }
 
     public static final class robotLimit{
