@@ -66,32 +66,26 @@ Children:
   - Children:
     - Children: []
       Properties:
-        Forward Module (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
+        Output Module (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
           choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11',
             '12', '13', '14', '15', '16', '17', '18', '19', '20']
           default: '0'
-          name: Forward Module (Solenoid)
+          name: Output Module (Solenoid)
           validators: [Solenoid]
-          value: '0'
-        Reverse Channel (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
+          value: '1'
+        Output Channel (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
           choices: ['0', '1', '2', '3', '4', '5', '6', '7']
           default: '0'
-          name: Reverse Channel (Solenoid)
-          validators: null
+          name: Output Channel (Solenoid)
+          validators: [Solenoid]
           value: '0'
-        Forward Module Type (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
+        Output Module Type (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
           choices: [CTREPCM, REVPH]
           default: CTREPCM
-          name: Forward Module Type (Solenoid)
+          name: Output Module Type (Solenoid)
           validators: null
           value: CTREPCM
-        Forward Channel (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
-          choices: ['0', '1', '2', '3', '4', '5', '6', '7']
-          default: '0'
-          name: Forward Channel (Solenoid)
-          validators: [Solenoid]
-          value: '0'
-      Base: Double Solenoid
+      Base: Solenoid
       Name: ClawSolenoid
     Properties:
       Send to SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: false,
