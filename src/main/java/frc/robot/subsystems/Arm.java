@@ -7,8 +7,13 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.simulation.PWMSim;
+import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.SimConstants;
+import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.robotLimit;
 
@@ -18,6 +23,20 @@ public class Arm extends SubsystemBase {
   /** Creates a new Arm. */
   private WPI_TalonFX shoulderMotor;
 	private WPI_TalonFX elbowMotor;
+  private PWMSim test;
+
+  //private final DCMotor gearbox = ;
+  private final SingleJointedArmSim ArmSim = 
+    new SingleJointedArmSim(
+      gearbox, 
+      Constants.SimConstants.gearingShoulder, 
+      Constants.SimConstants.jKgMetersSquared,
+      Constants.SimConstants.totalArmLength,
+      Constants.SimConstants.minAngleRads, 
+      Constants.SimConstants.maxAngleRads, 
+      Constants.SimConstants.armMassKg, 
+      true);
+
   private double shoulderAngle = 0;
   private double elbowAngle = 0;
 

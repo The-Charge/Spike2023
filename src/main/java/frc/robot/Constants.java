@@ -54,16 +54,16 @@ public class Constants {
         // Example value only - as above, this must be tuned for your drive!
         public static final double kPDriveVel = 3.4457; //4
     }
+
     public static final class ArmConstants {
         public static final double shoulderArmLength = 1.067;
         public static final double elbowArmLength = 0.8128;
         public static final double shoulderHeight = 0.254;
-        public static final double shoulderWeight = 5.443;
+        public static final double shoulderWeight = 8;//TODO kg
         public static final double elbowMotorWeight = 0.001;
-        public static final double elbowWeight = 0.001;
-        public static final double elbowperMotorTick = 0.001;
+        public static final double elbowWeight = 12;
+        public static final double elbowperMotorTick = 0.001;//TODO kg
         public static final double shoulderperMotorTick = 0.000194;
-
     }
 
     public static final class robotLimit{
@@ -88,6 +88,32 @@ public class Constants {
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
     
+    }
+
+    public static final class SimConstants {
+        //Gear box reduction
+        //500 = 500:1 gear reduction
+        public static final double gearingShoulder = 500;
+        public static final double gearingElbow = 2130;
+
+        //TODO temp foot pounds to kg meters
+        public static final double footPoundToKgMeters = 0.1382549544;
+        public static final double jKgMetersSquared = 55 * footPoundToKgMeters;//55 foot pounds
+        //8 pounds 3o inch
+
+        //TODO temp inch to meters
+        public static final double inchToMeter = 0.0254;
+        public static final double armLengthMetersShoulder = 39 * inchToMeter;
+        public static final double armLengthMetersElbow = 36 * inchToMeter;
+        public static final double totalArmLength = armLengthMetersElbow + armLengthMetersShoulder;
+
+        
+        public static final double minAngleRads = -56;
+        public static final double maxAngleRads = 56;
+
+        public static final double poundsToKg = 0.453592;
+        public static final double armMassKg = (/*elbow*/12 + /*shoulder*/8) *.453592;
+        //TODO 12 pounds elbow to claw, 8 shoulder to elbow
     }
 }
 
