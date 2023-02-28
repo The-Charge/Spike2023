@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.robotLimit;
-
 import java.lang.Math;
 
 public class Arm extends SubsystemBase {
@@ -21,16 +20,13 @@ public class Arm extends SubsystemBase {
   private double shoulderAngle = 0;
   private double elbowAngle = 0;
 
-
   public Arm() {
     shoulderMotor = new WPI_TalonFX(5);
-
-		elbowMotor = shoulderMotor;//new WPI_TalonFX(6);
+		elbowMotor = new WPI_TalonFX(1);
     shoulderMotor.setInverted(true);
 		elbowMotor.setInverted(true);
     shoulderMotor.setNeutralMode(NeutralMode.Coast);
 		elbowMotor.setNeutralMode(NeutralMode.Coast);
-
   }
 
   public boolean isInLimit(double targetShoulderAngle, double targetElbowAngle){
@@ -40,18 +36,14 @@ public class Arm extends SubsystemBase {
                         Math.cos(elbowHorizen) * ArmConstants.elbowArmLength);
     double y = Math.sin(shoulderHorizen) * ArmConstants.shoulderArmLength +
                Math.sin(elbowHorizen) * ArmConstants.elbowArmLength;
-    if(y + ArmConstants.shoulderHeight > robotLimit.height || 
-       y < - ArmConstants.shoulderHeight) return false;
-    if(x > robotLimit.widthFromCenter) return false;
-    if (x < robotLimit.robotLength / 2 && y < 0) return false;
-    return true;
+    return isXYLimit(x,y);
   }
+
   public boolean isXYLimit(double x, double y){
     if(y < -ArmConstants.shoulderHeight) return false;
-    if(y > robotLimit.height) return false;
-    if(x > robotLimit.widthFromCenter) return false;
-    if(x < -robotLimit.widthFromCenter) return false;
-    if(Math.abs(x) < robotLimit.robotLength && y < 0)return false;
+    if(y + ArmConstants.shoulderHeight > robotLimit.height) return false;
+    if(Math.abs(x) > robotLimit.widthFromCenter) return false;
+    if(Math.abs(x) < robotLimit.robotLength / 2 && y < 0)return false;
     return true;
   }
 
@@ -76,7 +68,6 @@ public class Arm extends SubsystemBase {
   
   public boolean isElbowWithGravity (double endElbowAngle){
     double elbowAdjusted = elbowAngle + shoulderAngle;
-
     if (Math.abs(elbowAdjusted) < .00001) return false;
     return ((endElbowAngle + shoulderAngle) / elbowAdjusted < 1);
   }
@@ -96,23 +87,20 @@ public class Arm extends SubsystemBase {
     if (thirdSide + ArmConstants.elbowArmLength < ArmConstants.shoulderArmLength  || 
     thirdSide > ArmConstants.elbowArmLength + ArmConstants.shoulderArmLength) angles[2] = -1;
     else{
-     angles[2] = 1;
+      angles[2] = 1;
       double oppositeElbowAngle = Math.acos((thirdSide * thirdSide + 
-      ArmConstants.shoulderArmLength * ArmConstants.shoulderArmLength - 
-      ArmConstants.elbowArmLength * ArmConstants.elbowArmLength) / 2 / ArmConstants.shoulderArmLength / 
-      thirdSide);
+        ArmConstants.shoulderArmLength * ArmConstants.shoulderArmLength - 
+        ArmConstants.elbowArmLength * ArmConstants.elbowArmLength) / 2 / ArmConstants.shoulderArmLength / thirdSide);
       angles[1] = Math.asin(thirdSide * Math.sin(oppositeElbowAngle) / ArmConstants.elbowArmLength);
       if (thirdSide * thirdSide > ArmConstants.shoulderArmLength * ArmConstants.shoulderArmLength + 
         ArmConstants.elbowArmLength + ArmConstants.elbowArmLength){
         angles[1] = Math.PI - angles[1];
       }
-      
       angles[0] = Math.abs(Math.PI/2 - oppositeElbowAngle - Math.atan(targetY/Math.abs(targetX)));
       if (targetX > 0) angles[0] = -angles[0];
       if (angles[0] > 0){
         angles[1] = -angles[1];
       }
-      return angles;
     }   
     return angles;
   }
@@ -143,18 +131,15 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putNumber("ElbowEncoder", elbowTicks);
 		SmartDashboard.putNumber("ShoulderEncoder", shoulderTicks);
     SmartDashboard.putNumber("currentShoulderAngle", shoulderAngle);
-    
   }
 
   public void run(double shoulderSpeed, double elbowSpeed){
 //      elbowMotor.set(elbowSpeed);
       shoulderMotor.set(shoulderSpeed);
   }
-  public double getElbowAngle(){
-    return elbowAngle;
-  }
-  public double getShoulderAngle(){
-    return shoulderAngle;
-  }
+  
+  public double getElbowAngle(){return elbowAngle;}
+
+  public double getShoulderAngle(){return shoulderAngle;}
 }
 
