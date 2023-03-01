@@ -71,7 +71,7 @@ public class Constants {
         public static double[] xRange = {0.2, 0.2, 0.2, 0.2, 0.2};
         public static double[] yRange = {0.1, 0.1, 0.1, 0.1, 0.1};
         public static double[] shoulderRestVoltage = {0.014, -0.2, 0.2, -0.1, 0.1}; 
-        public static double[] elbowRestVoltage = {0, -0.2, 0.2, -0.1, 0.1};
+        public static double[] elbowRestVoltage = {0.08, -0.2, 0.2, -0.1, 0.1};
     }
 
     public static final class robotLimit{

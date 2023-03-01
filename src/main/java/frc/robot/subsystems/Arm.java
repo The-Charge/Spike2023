@@ -131,10 +131,11 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putNumber("ElbowEncoder", elbowTicks);
 		SmartDashboard.putNumber("ShoulderEncoder", shoulderTicks);
     SmartDashboard.putNumber("currentShoulderAngle", shoulderAngle);
+    SmartDashboard.putNumber("currentElbowAngle", elbowAngle);
   }
 
   public void run(double shoulderSpeed, double elbowSpeed){
-//      elbowMotor.set(elbowSpeed);
+      elbowMotor.set(elbowSpeed);
       shoulderMotor.set(shoulderSpeed);
   }
   

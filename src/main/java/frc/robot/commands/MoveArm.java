@@ -79,72 +79,87 @@ public class MoveArm extends CommandBase {
       double ySpeed = -RobotContainer.getInstance().getrightJoystick().getY()/100;
       if (Math.abs(xSpeed) < 0.0005)xSpeed = 0;
       if (Math.abs(ySpeed) < 0.0005)ySpeed = 0;
-      double oldX = targetX;
-      double oldY = targetY;
-      targetX = targetX + xSpeed;
-      targetY = targetY + ySpeed;
-      if (targetX > ArmConstants.targetX[armState] + ArmConstants.xRange[armState]){
-        targetX = ArmConstants.targetX[armState] + ArmConstants.xRange[armState];
-      }else if (targetX < ArmConstants.targetX[armState] -  ArmConstants.xRange[armState]){
-        targetX = ArmConstants.targetX[armState] -  ArmConstants.xRange[armState];
-      }
-      if (targetY > ArmConstants.targetY[armState] + ArmConstants.yRange[armState]){
-        targetY = ArmConstants.targetY[armState] + ArmConstants.yRange[armState];
-      }else if (targetY < ArmConstants.targetY[armState] - ArmConstants.yRange[armState]){
-        targetY = ArmConstants.targetY[armState] - ArmConstants.yRange[armState];
-      }
-      if(!m_arm.isXYLimit(targetX, targetY)){
-        targetX = oldX;
-        targetY = oldY;
-      }
-      SmartDashboard.putNumber("targetX", targetX);
-      SmartDashboard.putNumber("targetY", targetY);
+      if (armState == 0){
+        targetShoulderAngle = targetShoulderAngle + xSpeed;
+        targetElbowAngle = targetElbowAngle + xSpeed;
+        if(targetShoulderAngle > .1){
+          targetShoulderAngle = 0.1;
+        }else if (targetShoulderAngle < -.1){
+          targetShoulderAngle = -.1;
+        }
+        if (targetElbowAngle > .2){
+          targetElbowAngle = .2;
+        }else if (targetElbowAngle < -.2){
+          targetElbowAngle = .2;
+        }
+      }else {
+        double oldX = targetX;
+        double oldY = targetY;
+        targetX = targetX + xSpeed;
+        targetY = targetY + ySpeed;
+        if (targetX > ArmConstants.targetX[armState] + ArmConstants.xRange[armState]){
+           targetX = ArmConstants.targetX[armState] + ArmConstants.xRange[armState];
+        }else if (targetX < ArmConstants.targetX[armState] -  ArmConstants.xRange[armState]){
+         targetX = ArmConstants.targetX[armState] -  ArmConstants.xRange[armState];
+        }
+        if (targetY > ArmConstants.targetY[armState] + ArmConstants.yRange[armState]){
+           targetY = ArmConstants.targetY[armState] + ArmConstants.yRange[armState];
+        }else if (targetY < ArmConstants.targetY[armState] - ArmConstants.yRange[armState]){
+           targetY = ArmConstants.targetY[armState] - ArmConstants.yRange[armState];
+        }
+        if(!m_arm.isXYLimit(targetX, targetY)){
+          targetX = oldX;
+          targetY = oldY;
+        }
+        SmartDashboard.putNumber("targetX", targetX);
+        SmartDashboard.putNumber("targetY", targetY);
     
-      double[] angles = m_arm.getAngles(targetX, targetY);
-      if (angles[2] > 0){
-        targetShoulderAngle = angles[0];
-        targetElbowAngle = angles[1];
-      }
+        double[] angles = m_arm.getAngles(targetX, targetY);
+        if (angles[2] > 0){
+          targetShoulderAngle = angles[0];
+          targetElbowAngle = angles[1];
+        }
 
-      if (RobotContainer.getInstance().getleftJoystick().getRawButton(1) && !(armState == 0)){
-        inTransittion = true;
-        elbowHitIntermediate = false;
-        armState = 0;
-      }else if(RobotContainer.getInstance().getleftJoystick().getRawButton(2) && !(armState == 1)){
-        inTransittion = true;
-        elbowHitIntermediate = false;
-        if(armState == 3 || armState == 4){
-          secondStepNeeded = true;
+        if (RobotContainer.getInstance().getleftJoystick().getRawButton(1) && !(armState == 0)){
+          inTransittion = true;
+          elbowHitIntermediate = false;
           armState = 0;
-          finalState = 1;
-        }else armState = 1;
-      }else if(RobotContainer.getInstance().getleftJoystick().getRawButton(3) && !(armState == 2)){
-        inTransittion = true;
-        elbowHitIntermediate = false;
-        if(armState == 3 || armState == 4){
-          secondStepNeeded = true;
-          armState = 0;
-          finalState = 2;
-        }else armState = 2;
-      }else if(RobotContainer.getInstance().getleftJoystick().getRawButton(4) && !(armState == 3)){
-        inTransittion = true;
-        elbowHitIntermediate = false;
-        if(armState == 1 || armState == 2){
-          secondStepNeeded = true;
-          armState = 0;
-          finalState = 3;
-        }else armState = 3;
-      }else if(RobotContainer.getInstance().getleftJoystick().getRawButton(5) && !(armState == 4)){
-        inTransittion = true;
-        elbowHitIntermediate = false;
-        armState = 4;
-        if(armState == 1 || armState == 2){
-          secondStepNeeded = true;
-          armState = 0;
-          finalState = 4;
-        }else armState = 4;
-      }
-    } 
+        }else if(RobotContainer.getInstance().getleftJoystick().getRawButton(2) && !(armState == 1)){
+          inTransittion = true;
+          elbowHitIntermediate = false;
+          if(armState == 3 || armState == 4){
+            secondStepNeeded = true;
+            armState = 0;
+            finalState = 1;
+          }else armState = 1;
+        }else if(RobotContainer.getInstance().getleftJoystick().getRawButton(3) && !(armState == 2)){
+          inTransittion = true;
+          elbowHitIntermediate = false;
+          if(armState == 3 || armState == 4){
+            secondStepNeeded = true;
+            armState = 0;
+            finalState = 2;
+          }else armState = 2;
+        }else if(RobotContainer.getInstance().getleftJoystick().getRawButton(4) && !(armState == 3)){
+          inTransittion = true;
+          elbowHitIntermediate = false;
+          if(armState == 1 || armState == 2){
+            secondStepNeeded = true;
+            armState = 0;
+            finalState = 3;
+          }else armState = 3;
+        }else if(RobotContainer.getInstance().getleftJoystick().getRawButton(5) && !(armState == 4)){
+          inTransittion = true;
+          elbowHitIntermediate = false;
+          armState = 4;
+          if(armState == 1 || armState == 2){
+            secondStepNeeded = true;
+            armState = 0;
+            finalState = 4;
+          }else armState = 4;
+        }
+      } 
+    }
     holdPosition(); 
   }
 
@@ -152,8 +167,9 @@ public class MoveArm extends CommandBase {
     double currentElbowAngle = m_arm.getElbowAngle();
     double currentShoulderAngle = m_arm.getShoulderAngle();
     double temp = targetShoulderAngle-currentShoulderAngle;
+    double temp2 =  targetElbowAngle-currentElbowAngle;
     m_arm.run(0.1 * temp + Math.abs(temp)/temp*ArmConstants.shoulderRestVoltage[armState], 
-      0.1 * (targetElbowAngle - currentElbowAngle) + ArmConstants.elbowRestVoltage[armState]);
+      0.2 * (targetElbowAngle - currentElbowAngle) + ArmConstants.elbowRestVoltage[armState]);
     SmartDashboard.putNumber("targetshoulder", targetShoulderAngle);
     SmartDashboard.putNumber("targetelbow", targetElbowAngle);
   }
